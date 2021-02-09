@@ -92,6 +92,7 @@
 
     <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=ebb7d6186d87988d51dbbe5d3c725861&libraries=services"></script>
     <script>
+
         // 마커를 담을 배열입니다
         var markers = [];
 
@@ -170,51 +171,19 @@
             for ( var i=0; i<places.length; i++ ) {
 
                 // 마커를 생성하고 지도에 표시합니다
-                var placePosition = new kakao.maps.LatLng(places[i].y, places[i].x),
+                placePosition = new kakao.maps.LatLng(places[i].y, places[i].x),
                     marker = addMarker(placePosition, i),
                     itemEl = getListItem(i, places[i]); // 검색 결과 항목 Element를 생성합니다
-
                 // 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해
                 // LatLngBounds 객체에 좌표를 추가합니다
                 bounds.extend(placePosition);
 
-                // 커스텀 오버레이에 표시할 컨텐츠 입니다
-                // 커스텀 오버레이는 아래와 같이 사용자가 자유롭게 컨텐츠를 구성하고 이벤트를 제어할 수 있기 때문에
-                // 별도의 이벤트 메소드를 제공하지 않습니다
-                var content = '<div class="wrap">' +
-                    '    <div class="info">' +
-                    '        <div class="title">' +
-                    '            카카오 스페이스닷원' +
-                    '            <div class="close" onclick="closeOverlay()" title="닫기"></div>' +
-                    '        </div>' +
-                    '        <div class="body">' +
-                    '            <div class="img">' +
-                    '                <img src="https://cfile181.uf.daum.net/image/250649365602043421936D" width="73" height="70">' +
-                    '           </div>' +
-                    '            <div class="desc">' +
-                    '                <div class="ellipsis">제주특별자치도 제주시 첨단로 242</div>' +
-                    '                <div class="jibun ellipsis">(우) 63309 (지번) 영평동 2181</div>' +
-                    '                <div><a href="https://www.kakaocorp.com/main" target="_blank" class="link">홈페이지</a></div>' +
-                    '            </div>' +
-                    '        </div>' +
-                    '    </div>' +
-                    '</div>';
-
-
                 // 마커와 검색결과 항목에 mouseover 했을때
                 // 해당 장소에 인포윈도우에 장소명을 표시합니다
                 // mouseout 했을 때는 인포윈도우를 닫습니다
-                (function(marker, title) {
+                (function(marker, title,address1, address2,call) {
                     kakao.maps.event.addListener(marker, 'click', function() {
-                        new kakao.maps.CustomOverlay({
-                            content: content,
-                            map: map,
-                            position: marker.getPosition()
-                        });
-                    });
-
-                    kakao.maps.event.addListener(marker, 'mouseout', function() {
-                        infowindow.close();
+                        custom(marker, title,address1, address2,call)
                     });
 
                     itemEl.onmouseover =  function () {
@@ -224,8 +193,7 @@
                     itemEl.onmouseout =  function () {
                         infowindow.close();
                     };
-                })(marker, places[i].place_name);
-
+                })(marker, places[i].place_name,places[i].road_address_name,places[i].address_name,places[i].phone)
                 fragment.appendChild(itemEl);
             }
 
@@ -330,13 +298,69 @@
             infowindow.open(map, marker);
         }
 
+        // 커스텀 오버레이 생성함수
+        function custom(marker, title,address1, address2, call) {
+
+            var content = '<div class="wrap">' +
+                '    <div class="info">' +
+                '        <div class="title">' +
+                title         +
+                '            <div class="close" onclick="closeOverlay()" title="닫기"></div>' +
+                '        </div>' +
+                '        <div class="body">' +
+                '            <div class="desc">' +
+                '                <div class="ellipsis">' + '"도로명주소" = '  + address1  + '</div>' +
+                '                <div class="jibun">'+'"지번주소" = '  + address2 +'</div>' +
+                '                <div class="call">'+ '&nbsp' + call +'</div>' +
+                '<br>' +
+                '<input type="text" id="date" name="date" class="date" placeholder="날짜 yy.mm.dd" >' +
+                '&nbsp' +'&nbsp' +'&nbsp' +'&nbsp' +'&nbsp' +
+                '<input type="text" id="content" name="content" class="content" placeholder="내용" >' +
+                '            </div>' +
+                '            <div class="img">' +
+                '                <img src="img/aa.jpg" width="200px" height="90px">' +
+                // '                <div id="roadview" width="200px" height="100px"></div>' +
+                '           </div>' +
+                '       <input class="button1" type="button" value="일정추가" onClick="캘린더에 추가하는 logic">' +
+                '       <input class="button2" type="button" value="카테고리" onClick="카테코리에 추가하는 logic">' +
+                '            </div>' +
+                '        </div>' +
+                '    </div>' +
+                '</div>';
+
+            overlay = new kakao.maps.CustomOverlay({
+                content: content,
+                map: map,
+                position: marker.getPosition()
+            });
+
+
+        }
+        // 로드뷰 생성
+
+        var roadviewContainer = document.getElementById('roadview'); //로드뷰를 표시할 div
+        var roadview = new kakao.maps.Roadview(roadviewContainer); //로드뷰 객체
+        var roadviewClient = new kakao.maps.RoadviewClient(); //좌표로부터 로드뷰 파노ID를 가져올 로드뷰 helper객체
+
+        roadviewClient.getNearestPanoId(placePosition, 50, function(panoId) {
+            roadview.setPanoId(panoId, placePosition); //panoId와 중심좌표를 통해 로드뷰 실행
+        });
+
+
+        function closeOverlay() {
+            overlay.setMap(null);
+        }
+
         // 검색결과 목록의 자식 Element를 제거하는 함수입니다
         function removeAllChildNods(el) {
             while (el.hasChildNodes()) {
                 el.removeChild (el.lastChild);
             }
         }
+
+
     </script>
+
 </main>
     </div>
 </div>

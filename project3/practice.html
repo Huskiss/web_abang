@@ -126,7 +126,7 @@
         for ( var i=0; i<places.length; i++ ) {
 
             // 마커를 생성하고 지도에 표시합니다
-            var placePosition = new kakao.maps.LatLng(places[i].y, places[i].x),
+            placePosition = new kakao.maps.LatLng(places[i].y, places[i].x),
                 marker = addMarker(placePosition, i),
                 itemEl = getListItem(i, places[i]); // 검색 결과 항목 Element를 생성합니다
             // 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해
@@ -136,9 +136,9 @@
             // 마커와 검색결과 항목에 mouseover 했을때
             // 해당 장소에 인포윈도우에 장소명을 표시합니다
             // mouseout 했을 때는 인포윈도우를 닫습니다
-            (function(marker, title,address1, address2) {
+            (function(marker, title,address1, address2,call) {
                 kakao.maps.event.addListener(marker, 'click', function() {
-                   custom(marker, title,address1, address2)
+                   custom(marker, title,address1, address2,call)
                 });
 
                 itemEl.onmouseover =  function () {
@@ -148,8 +148,7 @@
                 itemEl.onmouseout =  function () {
                     infowindow.close();
                 };
-            })(marker, places[i].place_name,places[i].road_address_name,places[i].address_name);
-
+            })(marker, places[i].place_name,places[i].road_address_name,places[i].address_name,places[i].phone)
             fragment.appendChild(itemEl);
         }
 
@@ -255,7 +254,8 @@
     }
 
     // 커스텀 오버레이 생성함수
-    function custom(marker, title,address1, address2) {
+    function custom(marker, title,address1, address2, call) {
+
         var content = '<div class="wrap">' +
             '    <div class="info">' +
             '        <div class="title">' +
@@ -264,11 +264,17 @@
             '        </div>' +
             '        <div class="body">' +
             '            <div class="desc">' +
-            '                <div class="ellipsis">' + '[도로명주소]' + '<br>' + address1  + '</div>' +
-            '                <div class="ellipsis">'+'[우편주소]' + '<br>' + address2 +'</div>' +
+            '                <div class="ellipsis">' + '"도로명주소" = '  + address1  + '</div>' +
+            '                <div class="jibun">'+'"지번주소" = '  + address2 +'</div>' +
+            '                <div class="call">'+ '&nbsp' + call +'</div>' +
+            '<br>' +
+            '<input type="text" id="date" name="date" class="date" placeholder="날짜 yy.mm.dd" >' +
+            '&nbsp' +'&nbsp' +'&nbsp' +'&nbsp' +'&nbsp' +
+            '<input type="text" id="content" name="content" class="content" placeholder="내용" >' +
             '            </div>' +
             '            <div class="img">' +
-            '                <img src="img/aa.jpg" width="200" height="100">' +
+            '                <img src="img/aa.jpg" width="200px" height="90px">' +
+            // '                <div id="roadview" width="200px" height="100px"></div>' +
             '           </div>' +
             '       <input class="button1" type="button" value="일정추가" onClick="캘린더에 추가하는 logic">' +
             '       <input class="button2" type="button" value="카테고리" onClick="카테코리에 추가하는 logic">' +
@@ -277,23 +283,24 @@
             '    </div>' +
             '</div>';
 
-        new kakao.maps.CustomOverlay({
+        overlay = new kakao.maps.CustomOverlay({
             content: content,
             map: map,
             position: marker.getPosition()
         });
+
+
     }
     // 로드뷰 생성
-    // <div id="roadview" style="width:100%;height:300px;"></div>
-    //
-    // var roadviewContainer = document.getElementById('roadview'); //로드뷰를 표시할 div
-    // var roadview = new kakao.maps.Roadview(roadviewContainer); //로드뷰 객체
-    // var roadviewClient = new kakao.maps.RoadviewClient(); //좌표로부터 로드뷰 파노ID를 가져올 로드뷰 helper객체
-    // var position = new kakao.maps.LatLng(33.450701, 126.570667);
-    //
-    // roadviewClient.getNearestPanoId(position, 50, function(panoId) {
-    //     roadview.setPanoId(panoId, position); //panoId와 중심좌표를 통해 로드뷰 실행
-    // });
+
+    var roadviewContainer = document.getElementById('roadview'); //로드뷰를 표시할 div
+    var roadview = new kakao.maps.Roadview(roadviewContainer); //로드뷰 객체
+    var roadviewClient = new kakao.maps.RoadviewClient(); //좌표로부터 로드뷰 파노ID를 가져올 로드뷰 helper객체
+
+    roadviewClient.getNearestPanoId(placePosition, 50, function(panoId) {
+        roadview.setPanoId(panoId, placePosition); //panoId와 중심좌표를 통해 로드뷰 실행
+    });
+
 
     function closeOverlay() {
         overlay.setMap(null);

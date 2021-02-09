@@ -8,8 +8,11 @@
 .info .body {position: relative;top: 10px;overflow: hidden;}
 .info .desc {position: relative; left:10px; margin: 0px 0 0 0px;height: 100px;}
 .desc .ellipsis {font-size: 15px; overflow: hidden;text-overflow: ellipsis;white-space: nowrap;}
-.desc .jibun {font-size: 17px;color: #888;margin-top: -2px;}
-.info .img {position: relative; width: 200px;height: 110px;border: 1px solid #ddd;color: #888;overflow: hidden;}
+.desc .jibun {font-size: 13px;color:#463eff;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;}
+.desc .call {font-size: 13px;color:forestgreen;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;}
+.desc .date {width: 100px;height: 25px; font-size: 13px; background-color: #fff6e0; }
+.desc .content {width: 200px;height: 25px; font-size: 13px;background-color: #fff6e0;}
+.info .img {position: relative; width: 200px;height: 100px;border: 1px solid #ddd;color: #888;overflow: hidden;}
 .info:after {content: '';position: absolute;margin-left: -12px;left: 50%;bottom: 0;width: 22px;height: 12px;background: url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/vertex_white.png')}
 .info .link {color: #5085BB;}
 .button1 {position: absolute;bottom: 0px;right: 10px; background-color: #d5fff3; width: 130px;height: 30px;}
