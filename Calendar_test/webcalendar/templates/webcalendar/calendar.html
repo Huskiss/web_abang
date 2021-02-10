@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en" class="h-100">
+  <head>
+    <meta charset="utf-8">
+    <title>{{ page_title }}</title>
+
+    <script src="https://unpkg.com/jquery@3.4.1/dist/jquery.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.2/moment.min.js"></script>
+
+    <link href='https://unpkg.com/@fullcalendar/core@4.3.1/main.min.css' rel='stylesheet' />
+    <link href='https://unpkg.com/@fullcalendar/daygrid@4.3.0/main.min.css' rel='stylesheet' />
+    <link href='https://unpkg.com/@fullcalendar/timegrid@4.3.0/main.min.css' rel='stylesheet' />
+    <link href='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css' rel='stylesheet' />
+    <script src='https://unpkg.com/@fullcalendar/core@4.3.1/main.min.js'></script>
+    <script src='https://unpkg.com/@fullcalendar/interaction@4.3.0/main.min.js'></script>
+    <script src='https://unpkg.com/@fullcalendar/daygrid@4.3.0/main.min.js'></script>
+    <script src='https://unpkg.com/@fullcalendar/timegrid@4.3.0/main.min.js'></script>
+    <script src='https://unpkg.com/@fullcalendar/google-calendar@4.3.0/main.js'></script>
+
+  </head>
+
+<body>
+<div id='calendar' style="max-width: 800px; margin: 10px auto"></div>
+
+</body>
+
+<!--New 일정 추가 modal-->
+<div id="fullCalModal" class="modal fade">
+    <div class="modal-dialog" >
+        <div class="modal-content" >
+
+            <div class="modal-header" >
+                <h4 id="modalTitle" class="modal-title" >일정 추가</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">close</span> </button>
+            </div>
+
+{#            <form method="POST">#}
+{#            {% csrf_token %}#}
+
+            <div id="modalBody" class="modal-body">
+
+                <div class="form-group">
+                    <input class="form-control" type="text" placeholder="일정 내용" id="eventName" name="eventName">
+                </div>
+
+                <div class="form-group form-inline">
+                    <div class="input-group date" data-provide="datepicker">
+                        <input type="text" class="form-control" style="width: 5cm" placeholder="날짜 형식 yyyy-mm-dd" id="eventStartDate" name="eventStartDate">&nbsp;&nbsp;&nbsp;
+                        <input type="text" class="form-control" style="width: 5cm" placeholder="날짜 형식 yyyy-mm-dd" id="eventEndDate" name="eventEndDate">
+
+<!--                        <div class="input-group-addon">-->
+<!--                            <span class="glyphicon glyphicon-calendar"></span>-->
+<!--                        </div>-->
+                    </div>
+                </div>
+
+                <div class="form-group form-inline">
+                    <div class="input-group">
+                        <input type="text" class="form-control" style="width: 10cm" placeholder="장소명" id="eventLocation" name="eventLocation">&nbsp;&nbsp;&nbsp;
+                        <button type="submit" class="btn btn-primary" id="submitSearch">검색</button>
+                    </div>
+
+                    <br><br>
+                </div>
+
+                <div class="form-group">
+                    <input class="form-control" type="text" placeholder="상세 주소" id="detailAddress" name="detailAddress">
+                </div>
+
+                <div class="form-group">
+                    <textarea class="form-control" type="text" rows="2" placeholder="상세 일정" id="eventDescription" name="eventDescription"></textarea>
+                </div>
+
+                <div class="modal-footer">
+                    <button class="btn btn-default" data-dismiss="modal" aria-hidden="true" id="eventDefault">취소</button>
+                    <button type="button" class="btn btn-primary" id="submitSave">저장</button>
+                </div>
+            </div>
+{#            </form>#}
+        </div>
+    </div>
+</div>
+
+<!--기존 일정 클릭할 경우 modal-->
+<div id="fixModal" class="modal fade">
+    <div class="modal-dialog" >
+        <div class="modal-content" >
+
+            <div class="modal-header" >
+                <h4 id="fixModalTitle" class="modal-title" >일정 확인 및 수정</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">close</span> </button>
+            </div>
+
+{#            <form action="" method="">#}
+            <div id="fixModalBody" class="modal-body">
+
+                <div class="form-group">
+                    <input class="form-control"
+                           type="text"
+                           placeholder="일정 내용"
+                           id="fixEventName"
+                           name="fixEventName"
+                    >
+                </div>
+
+                <div class="form-group form-inline">
+                    <div class="input-group date" data-provide="datepicker">
+                        <input type="text" class="form-control" style="width: 5cm" placeholder="날짜 형식 yyyy-mm-dd" id="fixStartDate" name="fixStartDate">&nbsp;&nbsp;&nbsp;
+                        <input type="text" class="form-control" style="width: 5cm" placeholder="날짜 형식 yyyy-mm-dd" id="fixEndDate">
+<!--                        <div class="input-group-addon">-->
+<!--                            <span class="glyphicon glyphicon-calendar"></span>-->
+<!--                        </div>-->
+                    </div>
+                </div>
+
+                <div class="form-group form-inline">
+                    <div class="input-group">
+                        <input type="text" class="form-control" style="width: 10cm" placeholder="장소 이름" id="fixEventLocation">&nbsp;&nbsp;&nbsp;
+                        <button type="submit" class="btn btn-primary" id="fixSubmitSearch">검색</button>
+                    </div>
+
+                    <br><br>
+                </div>
+
+                <div class="form-group">
+                    <input class="form-control" type="text" placeholder="상세 주소" id="fixDetailAddress">
+                </div>
+
+                <div class="form-group">
+                    <textarea class="form-control" type="text" rows="2" placeholder="상세 일정" id="fixEventDescription"></textarea>
+                </div>
+
+                <div class="form-group form-inline">
+                    <div class="input-group">
+                        <div id="map" style="width:225px;height:225px;"></div>&nbsp;&nbsp;&nbsp;
+                        <img class="modal-content" id="mapImg1" src="/static/img/unnamed.jpg" style="width: 225px; height: 225px">
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button onclick="relayout()">relayout 호출하기</button>
+                    <button class="btn btn-default" data-dismiss="modal" aria-hidden="true" id="fixDefault">확인</button>
+                    <button type="button" class="btn btn-primary" id="fixSubmitSave">수정</button>
+                    <button type="button" class="btn btn-primary" id="fixSubmitDelete">삭제</button>
+                </div>
+            </div>
+{#            </form>#}
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=2d9522bd15c02cead68a2ae145ec6028"></script>
+<script src="/static/js/calendar.js"></script>
+
+</html>
