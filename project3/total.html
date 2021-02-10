@@ -46,16 +46,16 @@
                     </li>
                     <br><br><br><br><br>
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">
-                            <span data-feather="home"></span>
+                        <a class="nav-link active" href="total.html">
+                            <span data-feather="file"></span>
                             KAKAO MAP
                         </a>
                     </li>
                     <br><br><br><br><br>
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">
-                            <span data-feather="home"></span>
-                            CALENDAR
+                        <a class="nav-link active" href="calendar.html">
+                            <span data-feather="shopping-cart"></span>
+                            CALENDER
                         </a>
                     </li>
                     <br><br><br><br><br>
@@ -303,19 +303,19 @@
 
             var content = '<div class="wrap">' +
                 '    <div class="info">' +
-                '        <div class="title">' +
+                '        <div class="title" id="title" >' +
                 title         +
                 '            <div class="close" onclick="closeOverlay()" title="닫기"></div>' +
                 '        </div>' +
                 '        <div class="body">' +
                 '            <div class="desc">' +
-                '                <div class="ellipsis">' + '"도로명주소" = '  + address1  + '</div>' +
-                '                <div class="jibun">'+'"지번주소" = '  + address2 +'</div>' +
-                '                <div class="call">'+ '&nbsp' + call +'</div>' +
+                '                <div class="ellipsis" id="address1">' + '"도로명주소" = '  + address1  + '</div>' +
+                '                <div class="jibun" id="address2" >'+'"지번주소" = '  + address2 +'</div>' +
+                '                <div class="call" id="call">'+ '&nbsp' + call +'</div>' +
                 '<br>' +
                 '<input type="text" id="date" name="date" class="date" placeholder="날짜 yy.mm.dd" >' +
                 '&nbsp' +'&nbsp' +'&nbsp' +'&nbsp' +'&nbsp' +
-                '<input type="text" id="content" name="content" class="content" placeholder="내용" >' +
+                '<input type="text" id="content" name="content" class="content" placeholder="일정내용" >' +
                 '            </div>' +
                 '            <div class="img">' +
                 '                <img src="img/aa.jpg" width="200px" height="90px">' +

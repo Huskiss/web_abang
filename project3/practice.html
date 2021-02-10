@@ -136,9 +136,9 @@
             // 마커와 검색결과 항목에 mouseover 했을때
             // 해당 장소에 인포윈도우에 장소명을 표시합니다
             // mouseout 했을 때는 인포윈도우를 닫습니다
-            (function(marker, title,address1, address2,call) {
+            (function(marker, title,address1, address2,call, y, x) {
                 kakao.maps.event.addListener(marker, 'click', function() {
-                   custom(marker, title,address1, address2,call)
+                   custom(marker, title,address1, address2,call,y, x)
                 });
 
                 itemEl.onmouseover =  function () {
@@ -148,7 +148,7 @@
                 itemEl.onmouseout =  function () {
                     infowindow.close();
                 };
-            })(marker, places[i].place_name,places[i].road_address_name,places[i].address_name,places[i].phone)
+            })(marker, places[i].place_name,places[i].road_address_name,places[i].address_name,places[i].phone,places[i].y,places[i].x)
             fragment.appendChild(itemEl);
         }
 
@@ -253,8 +253,19 @@
         infowindow.open(map, marker);
     }
 
+
+        staticMapContainer  = document.getElementById('staticMap'),
+        staticMapOption = {
+        center: new kakao.maps.LatLng(33.450701, 126.570667), // 이미지 지도의 중심좌표
+        level: 3 // 이미지 지도의 확대 레벨
+    };
+
+        // 이미지 지도를 표시할 div와 옵션으로 이미지 지도를 생성합니다
+        staticMap = new kakao.maps.StaticMap(staticMapContainer, staticMapOption);
+
+
     // 커스텀 오버레이 생성함수
-    function custom(marker, title,address1, address2, call) {
+    function custom(marker, title,address1, address2, call, y, x) {
 
         var content = '<div class="wrap">' +
             '    <div class="info">' +
@@ -273,8 +284,9 @@
             '<input type="text" id="content" name="content" class="content" placeholder="내용" >' +
             '            </div>' +
             '            <div class="img">' +
-            '                <img src="img/aa.jpg" width="200px" height="90px">' +
-            // '                <div id="roadview" width="200px" height="100px"></div>' +
+            '                <div id="staticMap" style="width:200px;height:90px;"></div>' +
+            // '                <img src="img/aa.jpg" width="200px" height="90px">' +
+            // '                <div id="roadview" width="200px" height="90px"></div>' +
             '           </div>' +
             '       <input class="button1" type="button" value="일정추가" onClick="캘린더에 추가하는 logic">' +
             '       <input class="button2" type="button" value="카테고리" onClick="카테코리에 추가하는 logic">' +
@@ -287,19 +299,36 @@
             content: content,
             map: map,
             position: marker.getPosition()
+
+
         });
 
+        markerPosition  = new kakao.maps.LatLng(y, x);
 
+        markers = {
+            position: markerPosition
+        };
+
+        staticMapContainer  = document.getElementById('staticMap'),
+            staticMapOption = {
+                center: markerPosition, // 이미지 지도의 중심좌표
+                level: 3, // 이미지 지도의 확대 레벨
+                marker: markers
+            };
+
+        // 이미지 지도를 표시할 div와 옵션으로 이미지 지도를 생성합니다
+        staticMap = new kakao.maps.StaticMap(staticMapContainer, staticMapOption);
+
+        // 로드뷰 생성
+        roadviewContainer = document.getElementById('roadview'); //로드뷰를 표시할 div
+        vroadview = new kakao.maps.Roadview(roadviewContainer); //로드뷰 객체
+        roadviewClient = new kakao.maps.RoadviewClient(); //좌표로부터 로드뷰 파노ID를 가져올 로드뷰 helper객체
+
+        roadviewClient.getNearestPanoId(placePosition, 50, function(panoId) {
+            roadview.setPanoId(panoId, placePosition); //panoId와 중심좌표를 통해 로드뷰 실행
+        });
     }
-    // 로드뷰 생성
 
-    var roadviewContainer = document.getElementById('roadview'); //로드뷰를 표시할 div
-    var roadview = new kakao.maps.Roadview(roadviewContainer); //로드뷰 객체
-    var roadviewClient = new kakao.maps.RoadviewClient(); //좌표로부터 로드뷰 파노ID를 가져올 로드뷰 helper객체
-
-    roadviewClient.getNearestPanoId(placePosition, 50, function(panoId) {
-        roadview.setPanoId(panoId, placePosition); //panoId와 중심좌표를 통해 로드뷰 실행
-    });
 
 
     function closeOverlay() {
