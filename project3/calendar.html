@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
 
-    <title>CALENDAR</title>
+    <title>KAKAO MAP</title>
 
 <!--    <script-->
 <!--            src="https://code.jquery.com/jquery-2.2.4.min.js"-->
@@ -59,7 +59,7 @@
 <body>
 
 <header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
-    <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="#">CALENDAR</a>
+    <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="#">KAKAO MAP</a>
 </header>
 <div class="container-fluid">
     <div class="row">
@@ -105,6 +105,7 @@
     <!--  Calendar div tag입니다. -->
     <div id='calendar' style="width: 70%; height: 700px; margin: 20px auto;"></div>
 </main>
+
     </div>
 </div>
 
@@ -121,7 +122,6 @@
             </div>
 
             <div id="modalBody" class="modal-body">
-
                 <div class="form-group">
                     <input class="form-control" type="text" placeholder="일정 내용" id="eventName">
                 </div>
@@ -130,11 +130,10 @@
                     <div class="input-group date" data-provide="datepicker">
                         <input type="text" class="form-control" style="width: 5cm" placeholder="날짜 형식 yyyy-mm-dd" id="eventStartDate">&nbsp;&nbsp;&nbsp;
                         <input type="text" class="form-control" style="width: 5cm" placeholder="날짜 형식 yyyy-mm-dd" id="eventEndDate">
-
                         <!-- 달력 표기 아이콘, 적용 안되서 잠시 중단 -->
-                        <!--                        <div class="input-group-addon">-->
-                        <!--                            <span class="glyphicon glyphicon-calendar"></span>-->
-                        <!--                        </div>-->
+                        <!-- <div class="input-group-addon">-->
+                        <!--     <span class="glyphicon glyphicon-calendar"></span>-->
+                        <!-- </div>-->
                     </div>
                 </div>
 
@@ -198,7 +197,6 @@
 
                     <br><br>
                 </div>
-
                 <div class="form-group">
                     <input class="form-control" type="text" placeholder="상세 주소" id="fixDetailAddress">
                 </div>
@@ -236,7 +234,7 @@
 
 <!-- Calendar 호출 및 작동 코드 -->
 <script>
-    <!-- Calendar 로드 -->
+    // Calendar 로드
     function loadCalendar() {
         var calendarEl = document.getElementById('calendar');
         var calendar = new FullCalendar.Calendar(calendarEl, {
@@ -245,20 +243,22 @@
             locale: 'ko',
             editable: true,
             selectable: true,
-            cache: false,
-
+            eventTextColor: 'white',
+            eventBorderColor: 'royalblue',
+            eventBackgroundColor: 'royalblue',
 
             plugins: ['interaction', 'dayGrid', 'googleCalendar'],
 
             <!-- 국경일 표현 위한 구글 캘린더 연동 -->
             googleCalendarApiKey: 'AIzaSyAbD4zXWKrX4Qx6lRAdGhbT6jTNMh8c5HA',
-            firstDay : 0,
+
+            firstDay : 0,    // ==> 일요일부터 시작
 
             <!-- 툴바 아이콘 위치 표시 -->
             header: {
                 left: 'prev, next ',
                 center: 'title',
-                right: 'LoginButton today',
+                right: 'today',
             },
 
             <!-- 일정 이벤트 -->
@@ -270,7 +270,6 @@
                     description: '프로젝트 마무리',
                     start: '2021-02-16',
                     end: '2021-02-17',
-                    textColor: 'white',
                 },
                 {
                     title: '프로젝트 발표',
@@ -279,7 +278,6 @@
                     description: '조원들과 프로젝트 회의',
                     start: '2021-02-17',
                     end: '2021-02-18',
-                    textColor: 'white',
                 },
             ],
 
@@ -298,14 +296,12 @@
             <!-- 이벤트 클릭 함수 -->
             eventClick: function(event) {
 
-                console.log(event);
-
                 if (event.el.origin === "https://www.google.com") {
 
                     <!-- 구글 연동 일정 클릭 시 구글 캘린더 화면 이동 방지 -->
                     event.jsEvent.preventDefault();
                 }
-                <!-- 구글 연동 일정 외 일반 일정 클릭 시 -->
+                <!-- 구글 연동 일정 외 일반 일정 클릭 시 modal popup -->
                 else {
                     $('#fixEventName').val(event.event.title);
                     $('#fixStartDate').val(moment(event.event.start).format('YYYY-MM-DD'));
@@ -317,24 +313,21 @@
                     <!-- modal창 등장 -->
                     $('#fixModal').modal('show');
 
-                    // 수정 버튼 활성화 함수인데, 오류가 많아 잠시 중단
-                    // $('#fixSubmitSave').on('click', function () {
-                    //     event.event.setProp('title', $('#fixEventName').val());
-                    //     event.event.cache= false
-                    //     // event.event.setExtendedProp('location', $('#fixEventLocation').val());
-                    //     // event.event.setExtendedProp('address', $('#fixDetailAddress').val());
-                    //     // event.event.setExtendedProp('description', $('#fixEventDescription').val());
-                    //     // event.event.setDates($('#fixStartDate').val(),$('#fixEndDate').val());
-                    //     $('#fixModal').modal('hide');
-                    //     calendar.render()
-                    //     console.log(event.event.cache)
-                    // });
+                    // 수정 버튼
+                    $('#fixSubmitSave').unbind()
+                    $('#fixSubmitSave').on('click', function () {
+                        event.event.setProp('title', $('#fixEventName').val());
+                        event.event.cache= false
+                        event.event.setExtendedProp('location', $('#fixEventLocation').val());
+                        event.event.setExtendedProp('address', $('#fixDetailAddress').val());
+                        event.event.setExtendedProp('description', $('#fixEventDescription').val());
+                        // event.event.setDates($('#fixStartDate').val(),$('#fixEndDate').val());
+                        $('#fixModal').modal('hide');
+                    });
 
-                    <!-- 확인 버튼 클릭 시시 -->
-
-                   <!-- 삭제 버튼 누를 시 이벤트(일정) 삭제 -->
+                    <!-- 삭제 버튼 누를 시 이벤트(일정) 삭제 -->
+                    $('#fixSubmitDelete').unbind()
                     $('#fixSubmitDelete').on('click', function () {
-                        console.log(event)
                         event.event.remove()
                         $('#fixModal').modal('hide');
                     });
@@ -343,15 +336,22 @@
 
             <!-- 달력 칸 드래그 선택 시 일정 추가 modal 생성  -->
             select: function (info) {
-                console.log(info)
 
                 if (confirm('새로운 일정을 추가하시겠습니까?')) {
+                    // modal 입력값 초기화 설정 (자동으로 값이 안지워짐)
+                    $('#eventName').val('')
+                    $('#eventStartDate').val('')
+                    $('#eventLocation').val('')
+                    $('#eventEndDate').val('')
+                    $('#detailAddress').val('')
+                    $('#eventDescription').val('')
 
                     $('#eventStartDate').val(info.startStr)
                     $('#eventEndDate').val(info.endStr)
                     $('#fullCalModal').modal('show');
 
                     <!-- 저장 버튼 클릭 시 새로운 일정 추가 -->
+                    $('#submitSave').unbind()
                     $('#submitSave').on('click', function(){
                         calendar.addEvent({
                             title: $('#eventName').val(),
@@ -364,20 +364,11 @@
                             backgroundColor: 'orange',
                             borderColor: 'orange'
                         })
-
-                        // modal 입력값 초기화 설정 (자동으로 값이 안지워짐)
-                        $('#eventName').val('')
-                        $('#eventStartDate').val('')
-                        $('#eventLocation').val('')
-                        $('#eventEndDate').val('')
-                        $('#detailAddress').val('')
-                        $('#eventDescription').val('')
-
-
                         $('#fullCalModal').modal('hide');
                     });
 
-                    // 확인 버튼 클릭 시 modal 입력값 초기화 설정
+                    // 취소 버튼 클릭 시 modal 입력값 초기화 설정
+                    $('#eventDefault').unbind()
                     $('#eventDefault').on('click', function () {
                         $('#eventName').val('')
                         $('#eventStartDate').val('')
