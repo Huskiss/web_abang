@@ -23,12 +23,11 @@
 <body>
 <div id='calendar' style="max-width: 800px; margin: 10px auto"></div>
 
-</body>
-
 <!--New 일정 추가 modal-->
+
 <div id="fullCalModal" class="modal fade">
-    <div class="modal-dialog" >
-        <div class="modal-content" >
+    <div class="modal-dialog">
+        <div class="modal-content">
 
             <div class="modal-header" >
                 <h4 id="modalTitle" class="modal-title" >일정 추가</h4>
@@ -40,14 +39,23 @@
 
             <div id="modalBody" class="modal-body">
 
+{#                <div class="row">#}
+{#                    <div class="col-xs-12">#}
+{#                        <label class="col-xs-4" for="eventName">일정 내용</label>#}
+{#                        <input class="inputModal" type="text" placeholder="일정 내용" id="eventName" name="eventName">#}
+{#                    </div>#}
+{#                </div>#}
                 <div class="form-group">
-                    <input class="form-control" type="text" placeholder="일정 내용" id="eventName" name="eventName">
+                    <label for="eventName">일정 내용</label>
+                    <input class="form-control" type="text" id="eventName" name="eventName">
                 </div>
 
                 <div class="form-group form-inline">
                     <div class="input-group date" data-provide="datepicker">
-                        <input type="text" class="form-control" style="width: 5cm" placeholder="날짜 형식 yyyy-mm-dd" id="eventStartDate" name="eventStartDate">&nbsp;&nbsp;&nbsp;
-                        <input type="text" class="form-control" style="width: 5cm" placeholder="날짜 형식 yyyy-mm-dd" id="eventEndDate" name="eventEndDate">
+                        <label for="eventStartDate">시작:</label>&nbsp;&nbsp;
+                        <input type="text" class="form-control" style="width: 5cm" id="eventStartDate" name="eventStartDate">&nbsp;&nbsp;&nbsp;
+                        <label for="eventEndDate">끝:</label>&nbsp;&nbsp;
+                        <input type="text" class="form-control" style="width: 5cm" id="eventEndDate" name="eventEndDate">
 
 <!--                        <div class="input-group-addon">-->
 <!--                            <span class="glyphicon glyphicon-calendar"></span>-->
@@ -55,22 +63,24 @@
                     </div>
                 </div>
 
+                <form action="#" method="post">
                 <div class="form-group form-inline">
                     <div class="input-group">
-                        <input type="text" class="form-control" style="width: 10cm" placeholder="장소명" id="eventLocation" name="eventLocation">&nbsp;&nbsp;&nbsp;
+                        <label for="eventLocation">장소명: </label>&nbsp;&nbsp;
+                        <input type="text" class="form-control" style="width: 8cm" id="eventLocation" name="eventLocation">&nbsp;&nbsp;&nbsp;
                         <button type="submit" class="btn btn-primary" id="submitSearch">검색</button>
                     </div>
-
-                    <br><br>
                 </div>
-
-                <div class="form-group">
-                    <input class="form-control" type="text" placeholder="상세 주소" id="detailAddress" name="detailAddress">
-                </div>
+                </form>
 
                 <div class="form-group">
-                    <textarea class="form-control" type="text" rows="2" placeholder="상세 일정" id="eventDescription" name="eventDescription"></textarea>
+                    <label for="detailAddress">도로명 주소</label>
+                    <input class="form-control" type="text" id="detailAddress" name="detailAddress">
                 </div>
+
+{#                <div class="form-group">#}
+{#                    <textarea class="form-control" type="text" rows="2" placeholder="상세 일정" id="eventDescription" name="eventDescription"></textarea>#}
+{#                </div>#}
 
                 <div class="modal-footer">
                     <button class="btn btn-default" data-dismiss="modal" aria-hidden="true" id="eventDefault">취소</button>
@@ -82,7 +92,9 @@
     </div>
 </div>
 
+
 <!--기존 일정 클릭할 경우 modal-->
+
 <div id="fixModal" class="modal fade">
     <div class="modal-dialog" >
         <div class="modal-content" >
@@ -96,9 +108,9 @@
             <div id="fixModalBody" class="modal-body">
 
                 <div class="form-group">
+                    <label for="fixEventName">[일정 내용]</label>
                     <input class="form-control"
                            type="text"
-                           placeholder="일정 내용"
                            id="fixEventName"
                            name="fixEventName"
                     >
@@ -106,8 +118,10 @@
 
                 <div class="form-group form-inline">
                     <div class="input-group date" data-provide="datepicker">
+                        <label for="fixStartDate">시작:</label>&nbsp;&nbsp;
                         <input type="text" class="form-control" style="width: 5cm" placeholder="날짜 형식 yyyy-mm-dd" id="fixStartDate" name="fixStartDate">&nbsp;&nbsp;&nbsp;
-                        <input type="text" class="form-control" style="width: 5cm" placeholder="날짜 형식 yyyy-mm-dd" id="fixEndDate">
+                        <label for="fixEndDate">끝:</label>&nbsp;&nbsp;
+                        <input type="text" class="form-control" style="width: 5cm" placeholder="날짜 형식 yyyy-mm-dd" id="fixEndDate" name="fixEndDate">
 <!--                        <div class="input-group-addon">-->
 <!--                            <span class="glyphicon glyphicon-calendar"></span>-->
 <!--                        </div>-->
@@ -116,30 +130,38 @@
 
                 <div class="form-group form-inline">
                     <div class="input-group">
-                        <input type="text" class="form-control" style="width: 10cm" placeholder="장소 이름" id="fixEventLocation">&nbsp;&nbsp;&nbsp;
+                        <label for="fixEventLocation">장소명: </label>&nbsp;&nbsp;
+                        <input type="text" class="form-control" style="width: 8cm" id="fixEventLocation">&nbsp;&nbsp;&nbsp;
                         <button type="submit" class="btn btn-primary" id="fixSubmitSearch">검색</button>
                     </div>
-
-                    <br><br>
                 </div>
 
                 <div class="form-group">
-                    <input class="form-control" type="text" placeholder="상세 주소" id="fixDetailAddress">
+                    <label for="fixDetailAddress">[도로명 주소]</label>
+                    <input class="form-control" type="text" id="fixDetailAddress">
                 </div>
 
-                <div class="form-group">
-                    <textarea class="form-control" type="text" rows="2" placeholder="상세 일정" id="fixEventDescription"></textarea>
+{#                <div class="form-group">#}
+{#                    <textarea class="form-control" type="text" rows="2" placeholder="상세 일정" id="fixEventDescription"></textarea>#}
+{#                </div>#}
+
+                <div class="form-group form-inline">
+                    <div class="input-group">
+                        <div type="text" style="width:225px">[일반지도]</div>&nbsp;&nbsp;&nbsp;
+                        <div type="text" style="width:225px">[로드뷰]</div>
+{#                        <img class="modal-content" id="mapImg1" src="/static/img/unnamed.jpg" style="width: 225px; height: 225px">#}
+                    </div>
                 </div>
 
                 <div class="form-group form-inline">
                     <div class="input-group">
                         <div id="map" style="width:225px;height:225px;"></div>&nbsp;&nbsp;&nbsp;
-                        <img class="modal-content" id="mapImg1" src="/static/img/unnamed.jpg" style="width: 225px; height: 225px">
+                        <div id="roadview" style="width:225px;height:225px;"></div>
+{#                        <img class="modal-content" id="mapImg1" src="/static/img/unnamed.jpg" style="width: 225px; height: 225px">#}
                     </div>
                 </div>
 
                 <div class="modal-footer">
-                    <button onclick="relayout()">relayout 호출하기</button>
                     <button class="btn btn-default" data-dismiss="modal" aria-hidden="true" id="fixDefault">확인</button>
                     <button type="button" class="btn btn-primary" id="fixSubmitSave">수정</button>
                     <button type="button" class="btn btn-primary" id="fixSubmitDelete">삭제</button>
@@ -150,7 +172,12 @@
     </div>
 </div>
 
-<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=2d9522bd15c02cead68a2ae145ec6028"></script>
+
+</body>
+
+
+
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=2d9522bd15c02cead68a2ae145ec6028&libraries=services"></script>
 <script src="/static/js/calendar.js"></script>
 
 </html>

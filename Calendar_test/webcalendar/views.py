@@ -11,43 +11,51 @@ def calendar(request):
 
 def save(request):
 
-    print(request.GET['e_title'])
     event_title = request.GET['e_title']
     event_start = request.GET['e_start']
     event_end = request.GET['e_end']
     event_location = request.GET['e_location']
     event_address = request.GET['e_address']
-    event_description = request.GET['e_description']
-    event_id = request.session['loginObj']['u_name']
+    u_id = request.session['loginObj']['u_name']
 
-    Calendar.objects.create(username=event_id,
+    Calendar.objects.create(username=u_id,
                             title=event_title,
                             start=event_start,
                             end=event_end,
                             location=event_location,
                             address=event_address,
-                            description=event_description)
-    context = {'username': event_id,
+                            )
+
+    recent_data = Calendar.objects.filter(username=u_id).order_by('-id')
+    print(recent_data[0])
+
+    context = {'username': u_id,
                'title': event_title,
                'start': event_start,
                'end': event_end,
                'location': event_location,
-               'address': event_address
+               'address': event_address,
+               'id': recent_data[0].id
                }
-    # result = request.POST.get()
-    # e_title = result['eventName']
-    # e_username = request.session['loginObj']['u_name']
-    # print(result)
-    # context = {'test': result,
-    #            'username': e_username
-    #            }
-    #
+
     return HttpResponse(json.dumps(context), content_type='application/json')
 
 def load(request):
-    calendar_list = get_object_or_404(Calendar)
+    u_id = request.session['loginObj']['u_name']
+    calendar_list = Calendar.objects.filter(username=u_id)
 
-    return render(request, 'webcalendar/calendar.html', {'results': calendar_list})
+    context = []
+    for i in calendar_list:
+        list = {'id': i.id,
+                'title': i.title,
+                'start': i.start,
+                'end': i.end,
+                'location': i.location,
+                'address': i.address
+                }
+        context.append(list)
+
+    return HttpResponse(json.dumps(context), content_type='application/json')
 
 def practice(request):
     u_id = request.session['loginObj']['u_name']
@@ -71,16 +79,15 @@ def fix(request):
     event_end = request.GET['e_end']
     event_location = request.GET['e_location']
     event_address = request.GET['e_address']
-    event_description = request.GET['e_description']
+    event_id = request.GET['e_id']
 
-    event = Calendar.objects.get(username=u_id, title=event_title)
+    event = Calendar.objects.get(id=event_id)
     print(event.title)
     event.title = event_title
     event.start = event_start
     event.end = event_end
     event.location = event_location
     event.address = event_address
-    event.description = event_description
 
     event.save()
 
@@ -89,9 +96,60 @@ def fix(request):
                'start': event_start,
                'end': event_end,
                'location': event_location,
-               'address': event_address
+               'address': event_address,
                }
 
     return HttpResponse(json.dumps(context), content_type='application/json')
 
 
+# 삭제 로직
+def delete(request):
+    u_id = request.session['loginObj']['u_name']
+
+    event_id = request.GET['e_id']
+
+    Calendar.objects.get(id=event_id).delete()
+    print(event_id)
+
+    context = {'username': u_id,
+               }
+
+    return HttpResponse(json.dumps(context), content_type='application/json')
+
+# 지도화면 이동 로직
+def map(request):
+    location = request.POST['eventLocation']
+
+    return  render(request, 'map화면 어플리케이션/map.html', {'location': location})
+
+def resize(request):
+    event_end = request.GET['e_end']
+    event_id = request.GET['e_id']
+
+    event = Calendar.objects.get(id=event_id)
+    event.end = event_end
+
+    event.save()
+
+    context = {
+               'end': event_end
+               }
+
+    return HttpResponse(json.dumps(context), content_type='application/json')
+
+def drop(request):
+    event_start = request.GET['e_start']
+    event_end = request.GET['e_end']
+    event_id = request.GET['e_id']
+
+    event = Calendar.objects.get(id=event_id)
+    event.start = event_start
+    event.end = event_end
+
+    event.save()
+
+    context = {
+        'start': event_start,
+        'end': event_end
+    }
+    return HttpResponse(json.dumps(context), content_type='application/json')

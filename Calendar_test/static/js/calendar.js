@@ -40,53 +40,36 @@ function loadCalendar() {
             }
         },
 
-        events: [
-          $.ajax({
-            url: 'http://localhost:8000/webcalendar/practice',
-            type: 'get',
-            dataType: 'json',
-            contentType: "application/json",
-            success: function (result, successCallback, failureCallback) {
-                alert('정상적으로 객체가 출력되었습니다.')
-                console.log(result)
-                calendar.addEvent({
-                    title: result.title,
-                    start: result.start,
-                    end: result.end,
-                    location: result.location,
-                    address: result.address
-                });
-            },
-            error: function(result,status,error) {
-              alert("code:"+result.status+"\n"+"message:"+result.responseText+"\n"+"error:"+error)
-              console.log(result)
-            }
-          }),
-        ],
+        events: function(info, successCallback, failureCallback) {
+            $.ajax({
+                url: 'http://localhost:8000/webcalendar/load',
+                type: 'get',
+                dataType: 'json',
+                contentType: "application/json",
+                success: function (result) {
+                    alert('정상적으로 객체가 출력되었습니다.')
+                    console.log(result)
+                    load_events = []
 
+                    $.each(result, function (index, element) {
+                        load_events.push({
+                            title: element.title,
+                            start: element.start,
+                            end: element.end,
+                            location: element.location,
+                            address: element.address,
+                            id: element.id
+                        });
+                    })
 
-
-        // events: [
-        //     {
-        //         title: '멀티캠퍼스 방문',
-        //         location: '멀티캠퍼스',
-        //         address: '서울시 강남구 테헤란로',
-        //         description: '조원들과 프로젝트 회의',
-        //         start: '2021-02-04',
-        //         end: '2021-02-05',
-        //         // textColor: 'white'
-        //     },
-        //     {
-        //         title: '처가댁 방문',
-        //         location: '광주집',
-        //         address: '광주 광역시 남구 장산길',
-        //         description: '어머니 아버지 섬김',
-        //         start: '2021-02-26',
-        //         end: '2021-02-28',
-        //         // textColor: 'white'
-        //     },
-        // ],
-
+                    successCallback(load_events);
+                },
+                error: function (result, status, error) {
+                    alert("code:" + result.status + "\n" + "message:" + result.responseText + "\n" + "error:" + error)
+                    console.log(result)
+                }
+            });
+        },
 
         eventSources: [
             {
@@ -105,7 +88,6 @@ function loadCalendar() {
 
         ],
 
-
         eventDidMount: function (info) {
             console.log(info);
         },
@@ -119,14 +101,11 @@ function loadCalendar() {
             else {
                 $('#fixEventName').val(event.event.title);
                 $('#fixStartDate').val(moment(event.event.start).format('YYYY-MM-DD'));
-                $('#fixEndDate').val(moment(event.event.end).format('YYYY-MM-DD'));
+                $('#fixEndDate').val(moment(event.event.end).subtract(1, 'days').format('YYYY-MM-DD'));
                 $('#fixEventLocation').val(event.event.extendedProps.location);
                 $('#fixDetailAddress').val(event.event.extendedProps.address);
-                $('#fixEventDescription').val(event.event.extendedProps.description);
-
 
                 $('#fixModal').modal('show');
-
 
                 // 수정 버튼
                 $('#fixSubmitSave').unbind()
@@ -134,10 +113,10 @@ function loadCalendar() {
 
                     let e_title = $('#fixEventName').val()
                     let e_start = $('#fixStartDate').val()
-                    let e_end = $('#fixEndDate').val()
+                    let e_end = moment(event.event.end).format('YYYY-MM-DD')
                     let e_location = $('#fixEventLocation').val()
                     let e_address = $('#fixDetailAddress').val()
-                    let e_description = $('#fixEventDescription').val()
+                    let e_id = event.event.id
 
                     $.ajax({
                         url: 'http://localhost:8000/webcalendar/fix/',
@@ -150,7 +129,7 @@ function loadCalendar() {
                             e_end: e_end,
                             e_location: e_location,
                             e_address: e_address,
-                            e_description: e_description
+                            e_id: e_id
                         },
                         success: function (result, successCallback, failureCallback) {
 
@@ -178,13 +157,34 @@ function loadCalendar() {
                 // 삭제
                 $('#fixSubmitDelete').unbind();
                 $('#fixSubmitDelete').on('click', function () {
-                    event.event.remove()
-                    $('#fixModal').modal('hide');
-                    console.log(event)
-                    calendar.render()
-                });
 
-            }
+                    if (confirm('정말로 일정을 삭제 하시겠습니까?')) {
+                        let e_id = event.event.id
+
+                        $.ajax({
+                            url: 'http://localhost:8000/webcalendar/delete/',
+                            type: 'GET',
+                            dataType: 'json',
+                            contentType: "application/json",
+                            data: {
+                                e_id: e_id
+                            },
+                            success: function (result, successCallback, failureCallback) {
+
+                                alert('정상적으로 객체가 출력되었습니다.')
+                                event.event.remove()
+                            },
+
+                            error: function (result, status, error) {
+                                alert("code:" + result.status + "\n" + "message:" + result.responseText + "\n" + "error:" + error)
+                                console.log(result)
+                            }
+                        })
+
+                        $('#fixModal').modal('hide');
+                        }
+                    });
+                }
         },
 
         select: function (info) {
@@ -192,21 +192,20 @@ function loadCalendar() {
 
             if (confirm('새로운 일정을 추가하시겠습니까?')) {
 
-
-                $('#eventStartDate').val(info.startStr)
-                $('#eventEndDate').val(info.endStr)
+                $('#eventStartDate').val(moment(info.start).format('YYYY-MM-DD'))
+                $('#eventEndDate').val(moment(info.end).subtract(1, 'days').format('YYYY-MM-DD'))
                 $('#fullCalModal').modal('show');
 
                 $('#submitSave').unbind()
                 $('#submitSave').on('click', function () {
-                    alert('클릭클릭!!')
+                    alert('일정을 저장하겠습니다.')
 
                     let e_title = $('#eventName').val()
                     let e_start = $('#eventStartDate').val()
-                    let e_end = $('#eventEndDate').val()
+                    let e_end = moment(info.end).format('YYYY-MM-DD')
                     let e_location = $('#eventLocation').val()
                     let e_address = $('#detailAddress').val()
-                    let e_description = $('#eventDescription').val()
+
 
                     $.ajax({
                         url: 'http://localhost:8000/webcalendar/save/',
@@ -218,8 +217,7 @@ function loadCalendar() {
                             e_start: e_start,
                             e_end: e_end,
                             e_location: e_location,
-                            e_address: e_address,
-                            e_description: e_description
+                            e_address: e_address
                         },
                         success: function (result, successCallback, failureCallback) {
 
@@ -231,7 +229,8 @@ function loadCalendar() {
                                 start: result.start,
                                 end: result.end,
                                 location: result.location,
-                                address: result.address
+                                address: result.address,
+                                id: result.id
                             });
                         },
                         error: function(result,status,error) {
@@ -247,7 +246,6 @@ function loadCalendar() {
                     $('#eventLocation').val('')
                     $('#eventEndDate').val('')
                     $('#detailAddress').val('')
-                    $('#eventDescription').val('')
                     });
 
                 $('#eventDefault').unbind();
@@ -257,13 +255,76 @@ function loadCalendar() {
                     $('#eventLocation').val('')
                     $('#eventEndDate').val('')
                     $('#detailAddress').val('')
-                    $('#eventDescription').val('')
                 })
             }
         },
+
+        // 일정 리사이즈 시 날짜 수정
+        eventResize: function (info) {
+            console.log(info.event)
+
+            if(confirm('일정 날짜를 수정하시겠습니까?')){
+                let e_end = moment(info.event.end).format('YYYY-MM-DD')
+                $.ajax({
+                        url: 'http://localhost:8000/webcalendar/resize/',
+                        type: 'GET',
+                        dataType: 'json',
+                        contentType: "application/json",
+                        data: {
+                            e_end: e_end,
+                            e_id: info.event.id
+                        },
+                        success: function (result, successCallback, failureCallback) {
+
+                            console.log(result.end)
+                            alert('정상적으로 날짜가 수정되었습니다.')
+
+                        },
+                        error: function(result,status,error) {
+                          alert("code:"+result.status+"\n"+"message:"+result.responseText+"\n"+"error:"+error)
+                          console.log(result)
+                        }
+                      })
+            }
+        },
+
+        // 일정 드래그앤드롭 시 데이터 수정
+        eventDrop: function(info){
+            console.log(info.event)
+
+            if(confirm('일정 날짜를 수정하시겠습니까?')){
+                let e_start = moment(info.event.start).format('YYYY-MM-DD')
+                let e_end = moment(info.event.end).format('YYYY-MM-DD')
+
+                $.ajax({
+                        url: 'http://localhost:8000/webcalendar/drop/',
+                        type: 'GET',
+                        dataType: 'json',
+                        contentType: "application/json",
+                        data: {
+                            e_start: e_start,
+                            e_end: e_end,
+                            e_id: info.event.id
+                        },
+                        success: function (result, successCallback, failureCallback) {
+
+                            console.log(result.start)
+                            alert('정상적으로 날짜가 수정되었습니다.')
+
+                        },
+                        error: function(result,status,error) {
+                          alert("code:"+result.status+"\n"+"message:"+result.responseText+"\n"+"error:"+error)
+                          console.log(result)
+                        }
+                      })
+            }
+        }
+
     });
         calendar.render();
 };
+
+// 자바스크립트 안에서 POST 방식으로 ajax 해야 할 때 필요한 보안 코드
 function getCookie(name) {
     var cookieValue = null;
     if (document.cookie && document.cookie !== '') {
@@ -295,6 +356,7 @@ $.ajaxSetup({
 });
 
 
+// 여기서부터 캘린더, 지도 실행
 if (document.readyState !== 'complete') {
 
     document.addEventListener('DOMContentLoaded', loadCalendar);
@@ -308,14 +370,56 @@ if (document.readyState !== 'complete') {
     // 지도를 표시할 div와  지도 옵션으로  지도를 생성합니다
     var map = new kakao.maps.Map(mapContainer, mapOption);
 
-    function relayout() {
+    $('#fixModal').on('shown.bs.modal', function (e) {
 
-        // 지도를 표시하는 div 크기를 변경한 이후 지도가 정상적으로 표출되지 않을 수도 있습니다
-        // 크기를 변경한 이후에는 반드시  map.relayout 함수를 호출해야 합니다
-        // window의 resize 이벤트에 의한 크기변경은 map.relayout 함수가 자동으로 호출됩니다
-        map.relayout();
-    };
+        // 주소-좌표 변환 객체를 생성합니다
+        var geocoder = new kakao.maps.services.Geocoder();
 
-} else {
+        let address = $('#fixDetailAddress').val()
+
+        geocoder.addressSearch(address, function(result, status) {
+            console.log(result)
+            console.log(status)
+            // 정상적으로 검색이 완료됐으면
+            if (status === kakao.maps.services.Status.OK) {
+
+                var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+
+                // 결과값으로 받은 위치를 마커로 표시합니다
+                var marker = new kakao.maps.Marker({
+                    map: map,
+                    position: coords
+                });
+
+                // // 인포윈도우로 장소에 대한 설명을 표시합니다
+                // var infowindow = new kakao.maps.InfoWindow({
+                //     content: '<div style="width:150px;text-align:center;padding:6px 0;">우리회사</div>'
+                // });
+                // infowindow.open(map, marker);
+
+                // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
+                map.setCenter(coords);
+                map.relayout();
+
+                var roadviewContainer = document.getElementById('roadview'); //로드뷰를 표시할 div
+                var roadview = new kakao.maps.Roadview(roadviewContainer); //로드뷰 객체
+                var roadviewClient = new kakao.maps.RoadviewClient(); //좌표로부터 로드뷰 파노ID를 가져올 로드뷰 helper객체
+
+                var position = new kakao.maps.LatLng(result[0].y, result[0].x);
+
+                // 특정 위치의 좌표와 가까운 로드뷰의 panoId를 추출하여 로드뷰를 띄운다.
+                roadviewClient.getNearestPanoId(position, 50, function(panoId) {
+                    roadview.setPanoId(panoId, position); //panoId와 중심좌표를 통해 로드뷰 실행
+                });
+            }
+        });
+    });
+
+    $('#fixModal').on('shown.bs.modal', function (e) {
+                   console.log(e)
+                   map.relayout()
+                });
+}
+else {
     loadCalendar();
 }
