@@ -1,0 +1,58 @@
+{%  extends 'base.html' %}
+
+{% block html_header %}
+    <style>
+      .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        user-select: none;
+      }
+
+      @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+          font-size: 3.5rem;
+        }
+      }
+    </style>
+
+
+    <!-- Custom styles for this template -->
+    <link href="/static/css/signin.css" rel="stylesheet">
+    <script src="/static/js/users.js"></script>
+{% endblock %}
+
+
+{% block html_body %}
+<body class="text-center">
+<main class="form-signin">
+  <form action="/users/loginProcess/" method="post">
+    {% csrf_token %}
+
+    <img class="mb-4" src="/static/image/hohoho.jpg" alt="" width="300" height="120">
+    <h1 class="h3 mb-3 fw-normal">로그인 하세요!!!</h1>
+
+    {% if err_msg %}
+        <h1 class="h3 mb-3 fw-normal">{{ err_msg }}</h1>
+    {% endif %}
+
+    <label for="inputId" class="visually-hidden">User ID</label>
+    <input type="text" id="inputId" name="inputId" class="form-control" placeholder="User ID" required autofocus>
+
+    <label for="inputPassword" class="visually-hidden">Password</label>
+    <input type="password" id="inputPassword" name="inputPassword" class="form-control" placeholder="Password" required>
+
+    <div class="checkbox mb-3">
+      <label>
+        <input type="checkbox" value="remember-me"> Remember me
+      </label>
+    </div>
+    <button class="w-100 btn btn-lg btn-primary" type="submit">Sign in</button>
+      <br><br>
+    <button class="w-100 btn btn-lg btn-warning" type="button"
+            onclick="user_register()">회원가입</button>
+  </form>
+</main>
+</body>
+{% endblock %}
