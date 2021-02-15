@@ -20,7 +20,7 @@ function loadCalendar() {
 
         events: function(info, successCallback, failureCallback) {
             $.ajax({
-                url: 'http://localhost:8000/calendars/load',
+                url: '/calendars/load',
                 type: 'get',
                 dataType: 'json',
                 contentType: "application/json",
@@ -84,11 +84,11 @@ function loadCalendar() {
                     let e_end = moment(event.event.end).format('YYYY-MM-DD')
                     let e_location = $('#fixEventLocation').val()
                     let e_address = $('#fixDetailAddress').val()
-                    let e_color = $('#color_select').val()
+                    let e_color = $('#fix_color_select').val()
                     let e_id = event.event.id
 
                     $.ajax({
-                        url: 'http://localhost:8000/calendars/fix/',
+                        url: '/calendars/fix/',
                         type: 'GET',
                         dataType: 'json',
                         contentType: "application/json",
@@ -134,7 +134,7 @@ function loadCalendar() {
                         let e_id = event.event.id
 
                         $.ajax({
-                            url: 'http://localhost:8000/calendars/delete/',
+                            url: '/calendars/delete/',
                             type: 'GET',
                             dataType: 'json',
                             contentType: "application/json",
@@ -181,7 +181,7 @@ function loadCalendar() {
                     let e_color = $('#color_select').val()
 
                     $.ajax({
-                        url: 'http://localhost:8000/calendars/save/',
+                        url: '/calendars/save/',
                         type: 'GET',
                         dataType: 'json',
                         contentType: "application/json",
@@ -241,7 +241,7 @@ function loadCalendar() {
             if(confirm('일정 날짜를 수정하시겠습니까?')){
                 let e_end = moment(info.event.end).format('YYYY-MM-DD')
                 $.ajax({
-                        url: 'http://localhost:8000/calendars/resize/',
+                        url: '/calendars/resize/',
                         type: 'GET',
                         dataType: 'json',
                         contentType: "application/json",
@@ -272,7 +272,7 @@ function loadCalendar() {
                 let e_end = moment(info.event.end).format('YYYY-MM-DD')
 
                 $.ajax({
-                        url: 'http://localhost:8000/calendars/drop/',
+                        url: '/calendars/drop/',
                         type: 'GET',
                         dataType: 'json',
                         contentType: "application/json",
@@ -299,36 +299,6 @@ function loadCalendar() {
         calendar.render();
 };
 
-// 자바스크립트 안에서 POST 방식으로 ajax 해야 할 때 필요한 보안 코드
-function getCookie(name) {
-    var cookieValue = null;
-    if (document.cookie && document.cookie !== '') {
-        var cookies = document.cookie.split(';');
-        for (var i = 0; i < cookies.length; i++) {
-            var cookie = cookies[i].trim();
-            // Does this cookie string begin with the name we want?
-            if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                break;
-            }
-        }
-    }
-    return cookieValue;
-}
-
-var csrftoken = getCookie('csrftoken');
-
-function csrfSafeMethod(method) {
-    // these HTTP methods do not require CSRF protection
-    return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
-}
-$.ajaxSetup({
-    beforeSend: function(xhr, settings) {
-        if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
-            xhr.setRequestHeader("X-CSRFToken", csrftoken);
-        }
-    }
-});
 
 
 // 여기서부터 캘린더, 지도 실행

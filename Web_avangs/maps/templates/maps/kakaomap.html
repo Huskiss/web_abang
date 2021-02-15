@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
 
-    <title>KAKAO MAP</title>
+    <title>{{ page_title }}</title>
 
     <script
             src="https://code.jquery.com/jquery-2.2.4.min.js"
@@ -21,6 +21,8 @@
     <link href="/static/css/call_position.css" rel="stylesheet">
     <link href="/static/css/place.css" rel="stylesheet">
     <link href="/static/css/custommoveray.css" rel="stylesheet">
+    <link href="/static/css/modal.css" rel="stylesheet">
+
     <script src="/static/js/kakaomap.js"></script>
 
 </head>
@@ -29,8 +31,31 @@
 
 <header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
     <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="#">KAKAO MAP</a>
-
 </header>
+
+{# modal 창내용#}
+    <div class="modal hidden">
+    <div class="md_overlay"></div>
+    <div class="md_content">
+        <h1>북마크!!</h1>
+        <br>
+        <div class="modal_text">
+            <input type="" id="content" name="content" class="content1" placeholder="카테고리" >
+            <select name="카테고리 목록" class="content1" placeholder="카테고리 목록" >
+                <option value="카테고리 목록">카테고리 목록</option>
+                 <option value="숙박시설">숙박시설</option>
+                  <option value="음식점">음식점</option>
+                  <option value="업무관련">업무관련</option>
+                 <option value="놀거리">놀거리</option>
+                </select>
+        </div>
+        <br>
+        <button>카테고리 추가</button>
+        <input id="close" class="button2" type="button" value="닫기" >
+    </div>
+    </div>
+
+
 <div class="container-fluid">
     <div class="row">
 <!-- DASH BOARD -->
@@ -53,7 +78,7 @@
                     </li>
                     <br><br><br><br><br>
                     <li class="nav-item">
-                        <a class="nav-link active" href="/calendars/">
+                        <a class="nav-link active" href="/calendars">
                             <span data-feather="shopping-cart"></span>
                             CALENDER
                         </a>
@@ -62,10 +87,11 @@
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="#">
                             <span data-feather="home"></span>
-                            CATEGORY
+                            BOOKMARK
                         </a>
                     </li>
                     <br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+
                 </ul>
             </span>
         </nav>
@@ -78,10 +104,21 @@
         <div id="menu_wrap" class="bg_white">
             <div class="option">
                 <div>
-                    <form onsubmit="searchPlaces(); return false;">
-                        키워드 : <input type="text" value="멀티캠퍼스 역삼" id="keyword" size="15">
-                        <button type="submit">검색하기</button>
-                    </form>
+                    {% if location %}
+                        <form onsubmit="searchPlaces(); return false;">
+                            키워드 : <input type="text" value={{ location }} id="keyword" size="15">
+                            <button type="submit">검색하기</button>
+                        </form>
+
+                    {% else %}
+                        <form onsubmit="searchPlaces(); return false;">
+                            키워드 : <input type="text" value="멀티캠퍼스 역삼" id="keyword" size="15">
+                            <button type="submit">검색하기</button>
+                        </form>
+
+                    {% endif %}
+
+
                 </div>
             </div>
             <hr>
@@ -90,7 +127,11 @@
         </div>
     </div>
 
-    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=ebb7d6186d87988d51dbbe5d3c725861&libraries=services"></script>
+    {#  성수님꺼  #}
+{#    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=ebb7d6186d87988d51dbbe5d3c725861&libraries=services"></script>#}
+    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=2d9522bd15c02cead68a2ae145ec6028&libraries=services"></script>
+
+
     <script>
 
         // 마커를 담을 배열입니다
@@ -300,7 +341,7 @@
 
         // 커스텀 오버레이 생성함수
         function custom(marker, title,address1, address2, call, y,x) {
-            var content =
+            let content =
                 '<div class="wrap">' +
                 '    <div class="info">' +
                 '        <div class="title" id="title" >' +
@@ -309,8 +350,8 @@
                 '        </div>' +
                 '        <div class="body">' +
                 '            <div class="desc">' +
-                '                <div class="ellipsis" id="address1">' + '"도로명주소" = '  + address1  + '</div>' +
-                '                <div class="jibun" id="address2" >'+'"지번주소" = '  + address2 +'</div>' +
+                '                <div class="ellipsis" id="address1">' + address1  + '</div>' +
+                '                <div class="jibun" id="address2" >' + address2 +'</div>' +
                 '                <div class="call" id="call">'+ '&nbsp' + call +'</div>' +
                 '<br>' +
                 '<input type="text" id="date1" name="date1" class="date" placeholder="시작날짜 yyyy.mm.dd" >' +
@@ -324,14 +365,15 @@
                 // '                <img src="img/aa.jpg" width="200px" height="90px">' +
                 // '                <div id="roadview" width="200px" height="90px"></div>' +
                 '           </div>' +
-                '       <input class="button1" type="button" value="일정추가" onClick="call()" >' +
-                '       <input class="button2" type="button" value="카테고리" onClick="카테코리에 추가하는 logic">' +
+                '       <input class="button1" type="button" value="일정추가" onclick="call123()" >' +
+                '       <input class="button2" type="button" value="카테고리" onclick="modal123()">' +
                 '            </div>' +
                 '        </div>' +
                 '    </div>' +
                 '</div>';
 
-            overlay = new kakao.maps.CustomOverlay({
+
+             overlay = new kakao.maps.CustomOverlay({
                 content: content,
                 map: map,
                 position: marker.getPosition()
@@ -339,7 +381,7 @@
 
             });
 
-            markerPosition  = new kakao.maps.LatLng(y, x);
+           markerPosition  = new kakao.maps.LatLng(y, x);
             markerPosition_y  = y
             markerPosition_y  = x
 
@@ -355,16 +397,8 @@
                 };
 
             // 이미지 지도를 표시할 div와 옵션으로 이미지 지도를 생성합니다
-            staticMap = new kakao.maps.StaticMap(staticMapContainer, staticMapOption);
+           staticMap = new kakao.maps.StaticMap(staticMapContainer, staticMapOption);
 
-            // 로드뷰 생성
-            roadviewContainer = document.getElementById('roadview'); //로드뷰를 표시할 div
-            vroadview = new kakao.maps.Roadview(roadviewContainer); //로드뷰 객체
-            roadviewClient = new kakao.maps.RoadviewClient(); //좌표로부터 로드뷰 파노ID를 가져올 로드뷰 helper객체
-
-            roadviewClient.getNearestPanoId(placePosition, 50, function(panoId) {
-                roadview.setPanoId(panoId, placePosition); //panoId와 중심좌표를 통해 로드뷰 실행
-            });
         }
 
 
@@ -386,6 +420,10 @@
     </div>
 </div>
 
+<script type="text/javascript">
+    document.cookie = "crossCookie=bar; SameSite=None; Secure";
+
+</script>
 
 
 </body>

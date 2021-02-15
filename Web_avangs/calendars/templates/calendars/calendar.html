@@ -102,11 +102,12 @@
 
                 </div>
 
-                <form action="#" method="post">
+                <form action="/calendars/map/" method="post">
+                    {% csrf_token %}
                 <div class="form-group form-inline">
                     <div class="input-group">
                         <label for="eventLocation">장소명: </label>&nbsp;&nbsp;
-                        <input type="text" class="form-control" style="width: 8cm" id="eventLocation" name="eventLocation">&nbsp;&nbsp;&nbsp;
+                        <input type="text" class="form-control" style="width: 8cm" id="eventLocation" name="eventLocation" required="required">&nbsp;&nbsp;&nbsp;
                         <button type="submit" class="btn btn-primary" id="submitSearch">검색</button>
                     </div>
                 </div>

@@ -109,7 +109,7 @@ def delete(request):
 def map(request):
     location = request.POST['eventLocation']
 
-    return  render(request, 'map화면 어플리케이션/map.html', {'location': location})
+    return  render(request, 'maps/kakaomap.html', {'location': location})
 
 def resize(request):
     event_end = request.GET['e_end']

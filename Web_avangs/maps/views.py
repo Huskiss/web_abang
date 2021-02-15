@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-
+from maps.models import Cal, Book
+from calendars.models import Calendar
 import json
 
 def maps(request):
@@ -17,28 +18,35 @@ def maps_process(request):
     date1 = request.GET['date1']
     date2 = request.GET['date2']
     content = request.GET['content']
-    position_y = request.GET['position_y']
-    position_x = request.GET['position_x']
     user_id = request.session['loginObj']['u_name']
 
 
-    # Map.objects.create(username=user_id,
-    #                     title=title,
-    #                     address1=address1,
-    #                     address2=address2,
-    #                     call=call,
-    #                     date1=date1,
-    #                     date2=date2,
-    #                     content=content)
+    Cal.objects.create(username=user_id,
+                       title=title,
+                       address1=address1,
+                       address2=address2,
+                       call=call,
+                       date1=date1,
+                       date2=date2,
+                       content=content)
 
-    context = {'username': user_id,
-                'title' : title,
-                'address1': address1,
-                'address2': address2,
-                'call': call,
-                'date': date1,
-                'date2': date2,
-                'content': content
+    Calendar.objects.create(username=user_id,
+                            title=content,
+                            location=title,
+                            address=address1,
+                            start=date1,
+                            end=date2,
+                            color='royalblue')
+
+
+    context = {'username':user_id,
+               'title': title,
+               'address1': address1,
+               'address2': address2,
+               'call': call,
+               'date1': date1,
+               'date2': date2,
+               'content': content
     }
 
     return HttpResponse(json.dumps(context), content_type='application/json')
