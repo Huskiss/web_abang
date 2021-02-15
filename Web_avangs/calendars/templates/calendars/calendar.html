@@ -26,9 +26,54 @@
   </head>
 
 <body>
-<div id='calendar' style="max-width: 800px; margin: 10px auto"></div>
 
+<header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
+    <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="#">KAKAO MAP</a>
 
+</header>
+<div class="container-fluid">
+    <div class="row">
+<!-- DASH BOARD -->
+        <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+            <span class="position-sticky pt-3">
+                <ul class="nav flex-column">
+                    <br><br><br>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="/">
+                            <span data-feather="home"></span>
+                            LOGIN
+                        </a>
+                    </li>
+                    <br><br><br><br><br>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/maps">
+                            <span data-feather="file"></span>
+                            KAKAO MAP
+                        </a>
+                    </li>
+                    <br><br><br><br><br>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/calendars/">
+                            <span data-feather="shopping-cart"></span>
+                            CALENDER
+                        </a>
+                    </li>
+                    <br><br><br><br><br>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="#">
+                            <span data-feather="home"></span>
+                            CATEGORY
+                        </a>
+                    </li>
+                    <br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+                </ul>
+            </span>
+        </nav>
+
+<div id='calendar' style="max-width: 70%; margin: 10px auto"></div>
+
+    </div>
+</div>
 <!--New 일정 추가 modal-->
 
 <div id="fullCalModal" class="modal fade">
