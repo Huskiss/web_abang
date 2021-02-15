@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>practice</title>
+
+    <script src="https://unpkg.com/jquery@3.4.1/dist/jquery.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.2/moment.min.js"></script>
+
+    <link href='https://unpkg.com/@fullcalendar/core@4.3.1/main.min.css' rel='stylesheet' />
+    <link href='https://unpkg.com/@fullcalendar/daygrid@4.3.0/main.min.css' rel='stylesheet' />
+    <link href='https://unpkg.com/@fullcalendar/timegrid@4.3.0/main.min.css' rel='stylesheet' />
+    <link href='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css' rel='stylesheet' />
+    <script src='https://unpkg.com/@fullcalendar/core@4.3.1/main.min.js'></script>
+    <script src='https://unpkg.com/@fullcalendar/interaction@4.3.0/main.min.js'></script>
+    <script src='https://unpkg.com/@fullcalendar/daygrid@4.3.0/main.min.js'></script>
+    <script src='https://unpkg.com/@fullcalendar/timegrid@4.3.0/main.min.js'></script>
+    <script src='https://unpkg.com/@fullcalendar/google-calendar@4.3.0/main.js'></script>
+
+</head>
+<body>
+<div id='calendar' style="max-width: 800px; margin: 10px auto"></div>
+</body>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        let calendarEl = document.getElementById('calendar');
+        let calendar = new FullCalendar.Calendar(calendarEl, {
+            themeSystem: 'Cosmo',
+            locale: 'ko',
+            editable: true,
+            selectable: true,
+            eventTextColor: 'white',
+            eventBorderColor: 'royalblue',
+            eventBackgroundColor: 'royalblue',
+            plugins: ['interaction', 'dayGrid', 'googleCalendar'],
+            googleCalendarApiKey: 'AIzaSyAbD4zXWKrX4Qx6lRAdGhbT6jTNMh8c5HA',
+            header: {
+                left: 'prev, next ',
+                center: 'title',
+                right: 'LoginButton today',
+            },
+        });
+    });
+
+
+
+
+    
+</script>
+
+</html>
+
+{#$(document).ready(function () {#}
+    {#    $('#calendar').fullCalendar({#}
+    {#        #}
+    {#    })#}
+    {# })#}
+
+{#events: function(info, successCallback, failureCallback) {#}
+{#                $.ajax({#}
+{#                    url:'db.sqlite3',#}
+{#                    dataType: 'json',#}
+{#                    type: 'POST',#}
+{##}
+{#                    sucess: function(result) {#}
+{#                        let events= [];#}
+{#                        $.each(result, function(index, element){#}
+{#                            events.push({#}
+{#                                title: element.title,#}
+{#                                start: element.start,#}
+{#                                end: element.end,#}
+{#                                location: element.location,#}
+{#                                address: element.address,#}
+{#                                description: element.description#}
+{#                            })#}
+{#                        })#}
+{#                        console.log(events)#}
+{#                        successCallback(events)#}
+{#                    }#}
+{##}
+{#                })#}
+{#            }#}
+
+{#function set_calendar(info) {#}
+{#        $('#calendar').fullCalendar({#}
+{#            themeSystem: 'Cosmo',#}
+{#            locale: 'ko',#}
+{#            editable: true,#}
+{#            selectable: true,#}
+{#            eventTextColor: 'white',#}
+{#            eventBorderColor: 'royalblue',#}
+{#            eventBackgroundColor: 'royalblue',#}
+{#            plugins: ['interaction', 'dayGrid', 'googleCalendar'],#}
+{#            googleCalendarApiKey: 'AIzaSyAbD4zXWKrX4Qx6lRAdGhbT6jTNMh8c5HA',#}
+{#            header: {#}
+{#                left: 'prev, next ',#}
+{#                center: 'title',#}
+{#                right: 'LoginButton today',#}
+{#            },#}
+{#        })#}
+{#    }#}
