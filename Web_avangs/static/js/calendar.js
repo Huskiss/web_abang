@@ -5,8 +5,6 @@ function loadCalendar() {
         editable: true,
         selectable: true,
         eventTextColor: 'white',
-        eventBorderColor: 'royalblue',
-        eventBackgroundColor: 'royalblue',
 
         plugins: ['interaction', 'dayGrid', 'googleCalendar'],
 
@@ -36,6 +34,8 @@ function loadCalendar() {
                             end: element.end,
                             location: element.location,
                             address: element.address,
+                            borderColor: element.color,
+                            backgroundColor: element.color,
                             id: element.id
                         });
                     })
@@ -71,6 +71,7 @@ function loadCalendar() {
                 $('#fixEndDate').val(moment(event.event.end).subtract(1, 'days').format('YYYY-MM-DD'));
                 $('#fixEventLocation').val(event.event.extendedProps.location);
                 $('#fixDetailAddress').val(event.event.extendedProps.address);
+                $('#fix_color_select').val(event.event.backgroundColor)
 
                 $('#fixModal').modal('show');
 
@@ -83,6 +84,7 @@ function loadCalendar() {
                     let e_end = moment(event.event.end).format('YYYY-MM-DD')
                     let e_location = $('#fixEventLocation').val()
                     let e_address = $('#fixDetailAddress').val()
+                    let e_color = $('#color_select').val()
                     let e_id = event.event.id
 
                     $.ajax({
@@ -96,14 +98,17 @@ function loadCalendar() {
                             e_end: e_end,
                             e_location: e_location,
                             e_address: e_address,
-                            e_id: e_id
+                            e_id: e_id,
+                            e_color: e_color
                         },
                         success: function (result, successCallback, failureCallback) {
 
                             console.log(result.title)
 
-                            alert('정상적으로 객체가 출력되었습니다.')
+                            alert('정상적으로 수정되었습니다.')
                             event.event.setProp('title', result.title);
+                            event.event.setProp('backgroundColor', result.color);
+                            event.event.setProp('borderColor', result.color);
                             event.event.setExtendedProp('location', result.location);
                             event.event.setExtendedProp('address', result.address);
                             event.event.setExtendedProp('description', result.description);
@@ -138,7 +143,7 @@ function loadCalendar() {
                             },
                             success: function (result, successCallback, failureCallback) {
 
-                                alert('정상적으로 객체가 출력되었습니다.')
+                                alert('정상적으로 삭제 되었습니다.')
                                 event.event.remove()
                             },
 
@@ -173,7 +178,7 @@ function loadCalendar() {
                     let e_end = moment(info.end).format('YYYY-MM-DD')
                     let e_location = $('#eventLocation').val()
                     let e_address = $('#detailAddress').val()
-
+                    let e_color = $('#color_select').val()
 
                     $.ajax({
                         url: 'http://localhost:8000/calendars/save/',
@@ -185,11 +190,10 @@ function loadCalendar() {
                             e_start: e_start,
                             e_end: e_end,
                             e_location: e_location,
-                            e_address: e_address
+                            e_address: e_address,
+                            e_color: e_color
                         },
                         success: function (result, successCallback, failureCallback) {
-
-                            console.log(result.title)
 
                             calendar.addEvent({
                                 title: result.title,
@@ -197,6 +201,8 @@ function loadCalendar() {
                                 end: result.end,
                                 location: result.location,
                                 address: result.address,
+                                borderColor: result.color,
+                                backgroundColor: result.color,
                                 id: result.id
                             });
                         },
@@ -213,6 +219,7 @@ function loadCalendar() {
                     $('#eventLocation').val('')
                     $('#eventEndDate').val('')
                     $('#detailAddress').val('')
+                    $('#color_select').val('')
                     });
 
                 $('#eventDefault').unbind();
@@ -222,6 +229,7 @@ function loadCalendar() {
                     $('#eventLocation').val('')
                     $('#eventEndDate').val('')
                     $('#detailAddress').val('')
+                    $('#color_select').val('')
                 })
             }
         },

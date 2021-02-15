@@ -15,6 +15,7 @@ def save(request):
     event_end = request.GET['e_end']
     event_location = request.GET['e_location']
     event_address = request.GET['e_address']
+    event_color = request.GET['e_color']
     u_id = request.session['loginObj']['u_name']
 
     Calendar.objects.create(username=u_id,
@@ -23,6 +24,7 @@ def save(request):
                             end=event_end,
                             location=event_location,
                             address=event_address,
+                            color=event_color
                             )
 
     recent_data = Calendar.objects.filter(username=u_id).order_by('-id')
@@ -33,6 +35,7 @@ def save(request):
                'end': event_end,
                'location': event_location,
                'address': event_address,
+               'color': event_color,
                'id': recent_data[0].id
                }
 
@@ -49,7 +52,8 @@ def load(request):
                 'start': i.start,
                 'end': i.end,
                 'location': i.location,
-                'address': i.address
+                'address': i.address,
+                'color': i.color
                 }
         context.append(list)
 
@@ -62,6 +66,7 @@ def fix(request):
     event_end = request.GET['e_end']
     event_location = request.GET['e_location']
     event_address = request.GET['e_address']
+    event_color = request.GET['e_color']
     event_id = request.GET['e_id']
 
     event = Calendar.objects.get(id=event_id)
@@ -71,6 +76,7 @@ def fix(request):
     event.end = event_end
     event.location = event_location
     event.address = event_address
+    event.color = event_color
 
     event.save()
 
@@ -80,6 +86,7 @@ def fix(request):
                'end': event_end,
                'location': event_location,
                'address': event_address,
+               'color': event_color
                }
 
     return HttpResponse(json.dumps(context), content_type='application/json')

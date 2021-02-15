@@ -70,14 +70,14 @@
             </span>
         </nav>
 
-<div id='calendar' style="max-width: 70%; margin: 10px auto"></div>
+<div id='calendar' style="max-width: 60%; margin: 10px auto"></div>
 
     </div>
 </div>
 <!--New 일정 추가 modal-->
 
 <div id="fullCalModal" class="modal fade">
-    <div class="modal-dialog">
+    <div class="modal-dialog" style="max-width: 50%; width: auto;">
         <div class="modal-content">
 
             <div class="modal-header" >
@@ -118,6 +118,18 @@
                 </div>
 
                 <div class="modal-footer">
+                    <label for="color_select">색상 :</label>
+                    <select class="inputModal mr-auto" name="color" id="color_select">
+                        <option value="red" style="color:#D25565;">빨간색</option>
+                        <option value="purple" style="color:#9775fa;">보라색</option>
+                        <option value="orange" style="color:#ffa94d;">주황색</option>
+                        <option value="royalblue" style="color:#74c0fc;">파란색</option>
+                        <option value="pink" style="color:#f06595;">핑크색</option>
+                        <option value="lightgreen" style="color:#63e6be;">연두색</option>
+                        <option value="green" style="color:#a9e34b;">초록색</option>
+                        <option value="blue" style="color:#4d638c;">남색</option>
+                        <option value="black" style="color:#495057;">검정색</option>
+                    </select>
                     <button class="btn btn-default" data-dismiss="modal" aria-hidden="true" id="eventDefault">취소</button>
                     <button type="button" class="btn btn-primary" id="submitSave">저장</button>
                 </div>
@@ -186,6 +198,18 @@
                 </div>
 
                 <div class="modal-footer">
+                    <label for="color_select">색상 :</label>
+                    <select class="inputModal mr-auto" name="color" id="fix_color_select">
+                        <option value="red" style="color:#D25565;">red</option>
+                        <option value="purple" style="color:#9775fa;">purple</option>
+                        <option value="orange" style="color:#ffa94d;">orange</option>
+                        <option value="royalblue" style="color:#74c0fc;">royalblue</option>
+                        <option value="pink" style="color:#f06595;">pink</option>
+                        <option value="lightgreen" style="color:#63e6be;">lightgreen</option>
+                        <option value="green" style="color:#a9e34b;">green</option>
+                        <option value="blue" style="color:#4d638c;">blue</option>
+                        <option value="black" style="color:#495057;">black</option>
+                    </select>
                     <button class="btn btn-default" data-dismiss="modal" aria-hidden="true" id="fixDefault">확인</button>
                     <button type="button" class="btn btn-primary" id="fixSubmitSave">수정</button>
                     <button type="button" class="btn btn-primary" id="fixSubmitDelete">삭제</button>
