@@ -1,3 +1,4 @@
+
 function loadCalendar() {
     var calendarEl = document.getElementById('calendar');
     var calendar = new FullCalendar.Calendar(calendarEl, {
@@ -78,10 +79,14 @@ function loadCalendar() {
                 // 수정 버튼
                 $('#fixSubmitSave').unbind()
                 $('#fixSubmitSave').on('click', function () {
+                    let end_val = $('#fixEndDate').val()
+                    let end_date = formatDate(end_val)
+
+
 
                     let e_title = $('#fixEventName').val()
                     let e_start = $('#fixStartDate').val()
-                    let e_end = moment(event.event.end).format('YYYY-MM-DD')
+                    let e_end = end_date
                     let e_location = $('#fixEventLocation').val()
                     let e_address = $('#fixDetailAddress').val()
                     let e_color = $('#fix_color_select').val()
@@ -103,8 +108,6 @@ function loadCalendar() {
                         },
                         success: function (result, successCallback, failureCallback) {
 
-                            console.log(result.title)
-
                             alert('정상적으로 수정되었습니다.')
                             event.event.setProp('title', result.title);
                             event.event.setProp('backgroundColor', result.color);
@@ -112,8 +115,9 @@ function loadCalendar() {
                             event.event.setExtendedProp('location', result.location);
                             event.event.setExtendedProp('address', result.address);
                             event.event.setExtendedProp('description', result.description);
-                            // event.event.setDates($('#fixStartDate').val(),$('#fixEndDate').val());
-                            // event.event.cache= false
+                            event.event.setDates(result.start, result.end, {allDay: true});
+                            // event.event.setAllDay(true, [maintainDuration=true])
+
                         },
                         error: function(result,status,error) {
                           alert("code:"+result.status+"\n"+"message:"+result.responseText+"\n"+"error:"+error)
@@ -156,6 +160,36 @@ function loadCalendar() {
                         $('#fixModal').modal('hide');
                         }
                     });
+                
+                // 검색 버튼
+                $('#fixSubmitSearch').unbind();
+                $('#fixSubmitSearch').on('click', function () {
+                    let location = $('#fixEventLocation').val()
+                    let kakao_url = 'https://dapi.kakao.com/v2/local/search/keyword'
+                    console.log(location)
+                    $.ajax({
+                        url: kakao_url,
+                        type: 'GET',
+                        dataType: 'json',
+                        data: {
+                            query : location,
+                        },
+                        headers: {
+                            Authorization: 'KakaoAK 926d2e88f9d93265d11e526d2ffe8536'
+                        },
+                        success: function (result) {
+                            alert('도로명 주소를 불러왔어요.')
+                            console.log(result)
+                            let doro = result['documents'][0]['road_address_name']
+                            $('#fixDetailAddress').val(doro)
+
+                        },
+                        error: function(result,status,error) {
+                          alert("code:"+result.status+"\n"+"message:"+result.responseText+"\n"+"error:"+error)
+                          console.log(result)
+                        }
+                    })
+                });
                 }
         },
 
@@ -299,6 +333,18 @@ function loadCalendar() {
         calendar.render();
 };
 
+function formatDate(date) {
+    var d = new Date(date),
+        month = '' + (d.getMonth() + 1),
+        day = '' + (d.getDate() + 1),
+        year = d.getFullYear();
+    if (month.length < 2)
+        month = '0' + month;
+    if (day.length < 2)
+        day = '0' + day;
+    return [year, month, day].join('-'); }
+
+출처: https://wooncloud.tistory.com/21 [Wooncloud - 뭉실뭉실 운구름 블로그]
 
 
 // 여기서부터 캘린더, 지도 실행
