@@ -74,9 +74,11 @@ function loadCalendar() {
                 $('#fixEventLocation').val(event.event.extendedProps.location);
                 $('#fixDetailAddress').val(event.event.extendedProps.address);
                 $('#fix_color_select').val(event.event.backgroundColor)
+
                 let fixDetailAddress = $('#fixDetailAddress').val()
 
                 if (!fixDetailAddress){
+                    console.log(fixDetailAddress)
                     $('#fixDetailAddress').val('')
                 }
 
@@ -178,10 +180,12 @@ function loadCalendar() {
                 $('#submitSave').unbind()
                 $('#submitSave').on('click', function () {
                     alert('일정을 저장하겠습니다.')
+                    let end_val = $('#eventEndDate').val()
+                    let end_date = formatDate(end_val)
 
                     let e_title = $('#eventName').val()
                     let e_start = $('#eventStartDate').val()
-                    let e_end = moment(info.end).format('YYYY-MM-DD')
+                    let e_end = end_date
                     let e_location = $('#eventLocation').val()
                     let e_address = $('#detailAddress').val()
                     let e_color = $('#color_select').val()
@@ -333,6 +337,7 @@ if (document.readyState !== 'complete') {
     // 지도를 표시할 div와  지도 옵션으로  지도를 생성합니다
     var map = new kakao.maps.Map(mapContainer, mapOption);
 
+
     $('#fixModal').on('shown.bs.modal', function (e) {
 
         // 주소-좌표 변환 객체를 생성합니다
@@ -341,8 +346,7 @@ if (document.readyState !== 'complete') {
         let address = $('#fixDetailAddress').val()
 
         geocoder.addressSearch(address, function(result, status) {
-            console.log(result)
-            console.log(status)
+
             // 정상적으로 검색이 완료됐으면
             if (status === kakao.maps.services.Status.OK) {
 
