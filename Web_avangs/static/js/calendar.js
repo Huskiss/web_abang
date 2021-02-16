@@ -67,12 +67,18 @@ function loadCalendar() {
                 event.jsEvent.preventDefault();
             }
             else {
+                $('#fixEventId').val(event.event.id);
                 $('#fixEventName').val(event.event.title);
                 $('#fixStartDate').val(moment(event.event.start).format('YYYY-MM-DD'));
                 $('#fixEndDate').val(moment(event.event.end).subtract(1, 'days').format('YYYY-MM-DD'));
                 $('#fixEventLocation').val(event.event.extendedProps.location);
                 $('#fixDetailAddress').val(event.event.extendedProps.address);
                 $('#fix_color_select').val(event.event.backgroundColor)
+                let fixDetailAddress = $('#fixDetailAddress').val()
+
+                if (!fixDetailAddress){
+                    $('#fixDetailAddress').val('')
+                }
 
                 $('#fixModal').modal('show');
 
@@ -154,35 +160,7 @@ function loadCalendar() {
                         $('#fixModal').modal('hide');
                         }
                     });
-                
-                // 검색 버튼
-                $('#fixSubmitSearch').unbind();
-                $('#fixSubmitSearch').on('click', function () {
-                    let location = $('#fixEventLocation').val()
-                    let kakao_url = 'https://dapi.kakao.com/v2/local/search/keyword'
 
-                    $.ajax({
-                        url: kakao_url,
-                        type: 'GET',
-                        dataType: 'json',
-                        data: {
-                            query : location,
-                        },
-                        headers: {
-                            Authorization: 'KakaoAK 926d2e88f9d93265d11e526d2ffe8536'
-                        },
-                        success: function (result) {
-                            alert('도로명 주소를 불러왔어요.')
-                            console.log(result)
-                            let doro = result['documents'][0]['road_address_name']
-                            $('#fixDetailAddress').val(doro)
-
-                        },
-                        error: function(result,status,error) {
-                          alert("error:"+error)
-                        }
-                    })
-                });
                 }
         },
 

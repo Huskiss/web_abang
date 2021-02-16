@@ -9,6 +9,7 @@ function call_cal(){
     let content = $('#content').val()
     let position_y = markerPosition_y
     let position_x = markerPosition_x
+    let id = $('#eventId').val()
 
 
     $.ajax({
@@ -25,7 +26,8 @@ function call_cal(){
             date2 : end_date,
             content : content,
             position_y : position_y,
-            position_x : position_x
+            position_x : position_x,
+            id: id
         },                   // 서버쪽 프로그램을 호출하기 위해 주어야 하는 data , 알아서 data를 GET방식의
                              // Query String 형식으로 만들어 준다!!
         success : function(result) {
@@ -39,6 +41,7 @@ function call_cal(){
     })
 
 }
+
 
 function modal123(){
    // alert("modal입니다!!")
