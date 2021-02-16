@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
 
-    <title>{{ page_title }}</title>
+    <title>BOOKMARK!!</title>
 
     <script
             src="https://code.jquery.com/jquery-2.2.4.min.js"
@@ -31,7 +31,7 @@
 <body>
 
 <header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
-    <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="#">KAKAO MAP</a>
+    <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="#">BOOKMARK!!</a>
 </header>
 
 
@@ -87,20 +87,21 @@
           <thead>
             <tr>
               <th>username</th>
+              <th>category</th>
               <th>title</th>
               <th>address</th>
               <th>call</th>
-              <th>category</th>
             </tr>
           </thead>
           <tbody>
             {% for post in posts %}
             <tr>
               <td>{{ post.username }}</td>
+              <td>{{ post.category }}</td>
               <td>{{ post.title }}</td>
               <td>{{ post.address1 }}</td>
               <td>{{ post.call }}</td>
-              <td>{{ post.category }}</td>
+
 
             </tr>
           {% endfor %}
