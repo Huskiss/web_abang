@@ -51,4 +51,27 @@ def maps_process(request):
 
     return HttpResponse(json.dumps(context), content_type='application/json')
 
+def books_process(request):
+    category = request.GET['category']
+    address1 = request.GET['address1']
+    title = request.GET['title']
+    call = request.GET['call']
+    user_id = request.session['loginObj']['u_name']
+
+    print(type(category))
+
+    Book.objects.create(username=user_id,
+                       category=category,
+                       address1=address1,
+                       title=title,
+                       call=call)
+
+    context = {'username': user_id,
+               'category': category,
+               'address1': address1,
+               'title': title,
+               'call': call,
+               }
+
+    return HttpResponse(json.dumps(context), content_type='application/json')
 
