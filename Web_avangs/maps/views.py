@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from maps.models import Cal, Book
 from calendars.models import Calendar
@@ -37,7 +37,6 @@ def maps_process(request):
                             start=date1,
                             end=date2,
                             color='royalblue')
-
 
     context = {'username':user_id,
                'title': title,

@@ -108,9 +108,18 @@ def delete(request):
 # 지도화면 이동 로직
 def map(request):
     location = request.POST['eventLocation']
+    schedule = request.POST['eventName']
+    start = request.POST['eventStartDate']
+    end = request.POST['eventEndDate']
+    context = {
+        'location': location,
+        'schedule': schedule,
+        'start': start,
+        'end': end
+    }
+    return  render(request, 'maps/kakaomap.html', context)
 
-    return  render(request, 'maps/kakaomap.html', {'location': location})
-
+# 캘린더 바 사이즈 조절 시, 데이터베이스 날짜 수정
 def resize(request):
     event_end = request.GET['e_end']
     event_id = request.GET['e_id']
@@ -126,6 +135,7 @@ def resize(request):
 
     return HttpResponse(json.dumps(context), content_type='application/json')
 
+# 캘린더 바 이동 시, 데이터베이스 날짜 수정
 def drop(request):
     event_start = request.GET['e_start']
     event_end = request.GET['e_end']

@@ -88,6 +88,9 @@
 
             <div id="modalBody" class="modal-body">
 
+                <form action="/calendars/map/" method="post">
+                    {% csrf_token %}
+
                 <div class="form-group">
                     <label for="eventName">일정 내용</label>
                     <input class="form-control" type="text" id="eventName" name="eventName">
@@ -95,15 +98,14 @@
 
                 <div class="form-group form-inline">
                     <label for="eventStartDate">시작:</label>&nbsp;&nbsp;
-                    <input type="text" class="form-control" style="width: 5cm" id="eventStartDate" name="eventStartDate" disabled="disabled">&nbsp;&nbsp;&nbsp;
+                    <input type="text" class="form-control" style="width: 5cm" id="eventStartDate" name="eventStartDate" >&nbsp;&nbsp;&nbsp;
 
                     <label for="eventEndDate">끝:</label>&nbsp;&nbsp;
-                    <input type="text" class="form-control" style="width: 5cm" id="eventEndDate" name="eventEndDate" disabled="disabled">
+                    <input type="text" class="form-control" style="width: 5cm" id="eventEndDate" name="eventEndDate" >
 
                 </div>
 
-                <form action="/calendars/map/" method="post">
-                    {% csrf_token %}
+
                 <div class="form-group form-inline">
                     <div class="input-group">
                         <label for="eventLocation">장소명: </label>&nbsp;&nbsp;

@@ -83,7 +83,6 @@ function loadCalendar() {
                     let end_date = formatDate(end_val)
 
 
-
                     let e_title = $('#fixEventName').val()
                     let e_start = $('#fixStartDate').val()
                     let e_end = end_date
@@ -192,9 +191,10 @@ function loadCalendar() {
 
             if (confirm('새로운 일정을 추가하시겠습니까?')) {
 
-
-                $('#eventStartDate').val(moment(info.start).format('YYYY-MM-DD'))
-                $('#eventEndDate').val(moment(info.end).subtract(1, 'days').format('YYYY-MM-DD'))
+                let start_date = moment(info.start).format('YYYY-MM-DD')
+                let end_date = moment(info.end).subtract(1, 'days').format('YYYY-MM-DD')
+                $('#eventStartDate').val(start_date)
+                $('#eventEndDate').val(end_date)
                 $('#fullCalModal').modal('show');
 
                 $('#submitSave').unbind()
