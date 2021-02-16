@@ -152,3 +152,19 @@ def drop(request):
         'end': event_end
     }
     return HttpResponse(json.dumps(context), content_type='application/json')
+
+def fix_map(request):
+    location = request.POST['fixEventLocation']
+    schedule = request.POST['fixEventName']
+    start = request.POST['fixStartDate']
+    end = request.POST['fixEndDate']
+    eventId = request.POST['fixEventId']
+
+    context = {
+        'location': location,
+        'schedule': schedule,
+        'start': start,
+        'end': end,
+        'id': eventId
+    }
+    return  render(request, 'maps/kakaomap.html', context)

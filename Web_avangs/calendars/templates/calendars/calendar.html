@@ -60,9 +60,9 @@
                     </li>
                     <br><br><br><br><br>
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">
+                        <a class="nav-link active" aria-current="page" href="/bookmarks">
                             <span data-feather="home"></span>
-                            CATEGORY
+                            BOOKMARK
                         </a>
                     </li>
                     <br><br><br><br><br><br><br><br><br><br><br><br><br><br>
@@ -155,6 +155,11 @@
 
             <div id="fixModalBody" class="modal-body">
 
+                <form action="/calendars/fix_map/" method="post">
+                    {% csrf_token %}
+
+                <input type="text" style="display: none" id="fixEventId" name="fixEventId">
+
                 <div class="form-group">
                     <label for="fixEventName">[일정 내용]</label>
                     <input class="form-control"
@@ -176,8 +181,8 @@
                 <div class="form-group form-inline">
                     <div class="input-group">
                         <label for="fixEventLocation">장소명: </label>&nbsp;&nbsp;
-                        <input type="text" class="form-control" style="width: 8cm" id="fixEventLocation">&nbsp;&nbsp;&nbsp;
-                        <button type="button" class="btn btn-primary" id="fixSubmitSearch">검색</button>
+                        <input type="text" class="form-control" style="width: 8cm" id="fixEventLocation" name="fixEventLocation">&nbsp;&nbsp;&nbsp;
+                        <button type="submit" class="btn btn-primary" id="fixSubmitSearch">검색</button>
                     </div>
                 </div>
 
@@ -185,6 +190,7 @@
                     <label for="fixDetailAddress">[도로명 주소]</label>
                     <input class="form-control" type="text" id="fixDetailAddress">
                 </div>
+                </form>
 
                 <div class="form-group form-inline">
                     <div class="input-group">

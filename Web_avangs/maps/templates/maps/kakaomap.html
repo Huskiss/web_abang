@@ -85,7 +85,7 @@
                     </li>
                     <br><br><br><br><br>
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">
+                        <a class="nav-link active" aria-current="page" href="/bookmarks">
                             <span data-feather="home"></span>
                             BOOKMARK
                         </a>
@@ -361,7 +361,7 @@
                     '                <div class="jibun" id="address2" >' + address2 +'</div>' +
                     '                <div class="call" id="call">'+ '&nbsp' + call +'</div>' +
                     '<br>' +
-
+                    '<input type="text" id="eventId" value="{{ id }}" style="display:none;">' +
                     '<input type="date" id="date1" name="date1" class="date" placeholder="시작날짜 yyyy-mm-dd" pattern="\d{4}-\d{2}-\d{2}" value="{{start}}" >' +
                     '&nbsp' +'&nbsp' +'&nbsp' +'&nbsp' +'&nbsp' +
                     '<input type="date" id="date2" name="date2" class="date" placeholder="끝날짜 yyyy-mm-dd" pattern="\d{4}-\d{2}-\d{2}" value="{{end}}">' +
