@@ -44,7 +44,7 @@ function loadCalendar() {
                     successCallback(load_events);
                 },
                 error: function (result, status, error) {
-                    alert("code:" + result.status + "\n" + "message:" + result.responseText + "\n" + "error:" + error)
+                    alert("error:" + error)
                 }
             });
         },
@@ -116,15 +116,12 @@ function loadCalendar() {
                             event.event.setExtendedProp('address', result.address);
                             event.event.setExtendedProp('description', result.description);
                             event.event.setDates(result.start, result.end, {allDay: true});
-                            // event.event.setAllDay(true, [maintainDuration=true])
 
                         },
                         error: function(result,status,error) {
-                          alert("code:"+result.status+"\n"+"message:"+result.responseText+"\n"+"error:"+error)
-                          console.log(result)
+                          alert("error:"+error)
                         }
                       })
-
 
                     $('#fixModal').modal('hide');
 
@@ -146,14 +143,12 @@ function loadCalendar() {
                                 e_id: e_id
                             },
                             success: function (result, successCallback, failureCallback) {
-
-                                alert('정상적으로 삭제 되었습니다.')
                                 event.event.remove()
+                                alert('정상적으로 삭제 되었습니다.')
                             },
 
                             error: function (result, status, error) {
-                                alert("code:" + result.status + "\n" + "message:" + result.responseText + "\n" + "error:" + error)
-                                console.log(result)
+                                alert("error:" + error)
                             }
                         })
 
@@ -166,7 +161,7 @@ function loadCalendar() {
                 $('#fixSubmitSearch').on('click', function () {
                     let location = $('#fixEventLocation').val()
                     let kakao_url = 'https://dapi.kakao.com/v2/local/search/keyword'
-                    console.log(location)
+
                     $.ajax({
                         url: kakao_url,
                         type: 'GET',
@@ -185,8 +180,7 @@ function loadCalendar() {
 
                         },
                         error: function(result,status,error) {
-                          alert("code:"+result.status+"\n"+"message:"+result.responseText+"\n"+"error:"+error)
-                          console.log(result)
+                          alert("error:"+error)
                         }
                     })
                 });
@@ -333,6 +327,7 @@ function loadCalendar() {
         calendar.render();
 };
 
+// Date날짜 YYYY-MM-DD 형식으로 변환 함수
 function formatDate(date) {
     var d = new Date(date),
         month = '' + (d.getMonth() + 1),
@@ -344,10 +339,9 @@ function formatDate(date) {
         day = '0' + day;
     return [year, month, day].join('-'); }
 
-출처: https://wooncloud.tistory.com/21 [Wooncloud - 뭉실뭉실 운구름 블로그]
 
 
-// 여기서부터 캘린더, 지도 실행
+// 여기서부터 캘린더 & 지도 실행
 if (document.readyState !== 'complete') {
 
     document.addEventListener('DOMContentLoaded', loadCalendar);
@@ -407,7 +401,6 @@ if (document.readyState !== 'complete') {
     });
 
     $('#fixModal').on('shown.bs.modal', function (e) {
-                   console.log(e)
                    map.relayout()
                 });
 }

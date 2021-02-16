@@ -7,11 +7,11 @@ function call_cal(){
     let date2 = $('#date2').val()
     let content = $('#content').val()
     let position_y = markerPosition_y
-    let position_x = markerPosition_y
+    let position_x = markerPosition_x
 
 
     $.ajax({
-        url : 'http://127.0.0.1:8000/maps/mapsProcess',  // 호출할 서버쪽 프로그램의 URL, Query String 제외
+        url : '/maps/mapsProcess',  // 호출할 서버쪽 프로그램의 URL, Query String 제외
         type : 'GET',        // 서버쪽 프로그램에 대한 request 방식
         dataType : 'json',   // 서버쪽 프로그램에서 response되는 데이터 형식(json)
         contentType: "application/json",
@@ -66,10 +66,10 @@ function call_book(){
     alert(category)
     alert(category_chart)
 
-    if (category == '') {
+    if (category === '') {
         alert('카테고리가 없어요!!')
         $.ajax({
-            url: 'http://127.0.0.1:8000/maps/booksProcess',  // 호출할 서버쪽 프로그램의 URL, Query String 제외
+            url: '/maps/booksProcess',  // 호출할 서버쪽 프로그램의 URL, Query String 제외
             type: 'GET',        // 서버쪽 프로그램에 대한 request 방식
             dataType: 'json',   // 서버쪽 프로그램에서 response되는 데이터 형식(json)
             contentType: "application/json",
@@ -93,7 +93,7 @@ function call_book(){
     else {
         alert('카테고리가 있어요!!')
         $.ajax({
-            url: 'http://127.0.0.1:8000/maps/booksProcess',  // 호출할 서버쪽 프로그램의 URL, Query String 제외
+            url: '/maps/booksProcess',  // 호출할 서버쪽 프로그램의 URL, Query String 제외
             type: 'GET',        // 서버쪽 프로그램에 대한 request 방식
             dataType: 'json',   // 서버쪽 프로그램에서 response되는 데이터 형식(json)
             contentType: "application/json",

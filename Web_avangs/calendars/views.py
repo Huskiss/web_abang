@@ -68,8 +68,6 @@ def fix(request):
     event_address = request.GET['e_address']
     event_color = request.GET['e_color']
     event_id = request.GET['e_id']
-    print(event_start)
-    print(event_end)
 
     event = Calendar.objects.get(id=event_id)
 
