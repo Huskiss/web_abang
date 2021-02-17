@@ -1,0 +1,50 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Bookmark {% endblock %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}
+        <script src="/static/js/posts.js"></script>
+{% endblock stylesheets %}
+
+{% block content %}
+
+        <div class="row">
+            <div class="col-md-12">
+              <div class="card">
+                <div class="card-header card-header-primary">
+                  <h4 class="card-title "> {{page_title}}'s Bookmark Table</h4>
+                  <p class="card-category"> Here is a subtitle for this table</p>
+                </div>
+                <div class="card-body">
+                  <div class="table-responsive">
+                    <table class="table">
+                      <thead class=" text-primary">
+                    <tr>
+                        <th>category</th>
+                        <th>location</th>
+                        <th>address</th>
+                        <th>call</th>
+                    </tr>
+                      </thead>
+                      <tbody>
+                      {% for post in posts %}
+                          <tr>
+                              <td>{{ post.category }}</td>
+                              <td>{{ post.title }}</td>
+                              <td>{{ post.address1 }}</td>
+                              <td>{{ post.call }}</td>
+                          </tr>
+                      {% endfor %}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+        </div>
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}{% endblock javascripts %}
