@@ -93,15 +93,15 @@
 
                 <div class="form-group">
                     <label for="eventName">일정 내용</label>
-                    <input class="form-control" type="text" id="eventName" name="eventName">
+                    <input class="form-control" type="text" id="eventName" name="eventName" required="required">
                 </div>
 
                 <div class="form-group form-inline">
                     <label for="eventStartDate">시작:</label>&nbsp;&nbsp;
-                    <input type="text" class="form-control" style="width: 5cm" id="eventStartDate" name="eventStartDate" >&nbsp;&nbsp;&nbsp;
+                    <input type="date" class="form-control" style="width: 5cm" id="eventStartDate" name="eventStartDate" >&nbsp;&nbsp;&nbsp;
 
                     <label for="eventEndDate">끝:</label>&nbsp;&nbsp;
-                    <input type="text" class="form-control" style="width: 5cm" id="eventEndDate" name="eventEndDate" >
+                    <input type="date" class="form-control" style="width: 5cm" id="eventEndDate" name="eventEndDate" >
 
                 </div>
 
@@ -120,7 +120,7 @@
                     <input class="form-control" type="text" id="detailAddress" name="detailAddress">
                 </div>
 
-                <div class="modal-footer">
+                <div class="modal-footer" >
                     <label for="color_select">색상 :</label>
                     <select class="inputModal mr-auto" name="color" id="color_select">
                         <option value="red" style="color:#D25565;">빨간색</option>
@@ -134,7 +134,7 @@
                         <option value="black" style="color:#495057;">검정색</option>
                     </select>
                     <button class="btn btn-default" data-dismiss="modal" aria-hidden="true" id="eventDefault">취소</button>
-                    <button type="button" class="btn btn-primary" id="submitSave">저장</button>
+                    <button type="button" class="btn btn-primary" id="submitSave" >저장</button>
                 </div>
             </div>
         </div>
@@ -192,14 +192,14 @@
                 </div>
                 </form>
 
-                <div class="form-group form-inline">
+                <div class="form-group form-inline" id="map_view">
                     <div class="input-group">
                         <div type="text" style="width:225px">[일반지도]</div>&nbsp;&nbsp;&nbsp;
                         <div type="text" style="width:225px">[로드뷰]</div>
                     </div>
                 </div>
 
-                <div class="form-group form-inline">
+                <div class="form-group form-inline" id="kakao_map">
                     <div class="input-group">
                         <div id="map" style="width:225px;height:225px;"></div>&nbsp;&nbsp;&nbsp;
                         <div id="roadview" style="width:225px;height:225px;"></div>

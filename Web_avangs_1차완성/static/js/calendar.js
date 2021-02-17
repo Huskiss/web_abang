@@ -97,7 +97,8 @@ function loadCalendar() {
                     let e_color = $('#fix_color_select').val()
                     let e_id = event.event.id
 
-                    $.ajax({
+                    if (e_title && e_start && e_end ) {
+                        $.ajax({
                         url: '/calendars/fix/',
                         type: 'GET',
                         dataType: 'json',
@@ -129,7 +130,10 @@ function loadCalendar() {
                       })
 
                     $('#fixModal').modal('hide');
-
+                    }
+                    else {
+                        alert('일정내용과 날짜는 필수 입력값입니다.')
+                    }
                 });
 
                 // 삭제
@@ -177,16 +181,19 @@ function loadCalendar() {
 
                 $('#submitSave').unbind()
                 $('#submitSave').on('click', function () {
-                    alert('일정을 저장하겠습니다.')
+                    alert('일정을 저장하시겠습니다.')
 
                     let e_title = $('#eventName').val()
                     let e_start = $('#eventStartDate').val()
-                    let e_end = moment(info.end).format('YYYY-MM-DD')
+                    let e_end_date = $('#eventEndDate').val()
+                    let e_end = formatDate(e_end_date)
+                    // let e_end = moment(info.end).format('YYYY-MM-DD')
                     let e_location = $('#eventLocation').val()
                     let e_address = $('#detailAddress').val()
                     let e_color = $('#color_select').val()
 
-                    $.ajax({
+                    if (e_title && e_start && e_end_date ) {
+                        $.ajax({
                         url: '/calendars/save/',
                         type: 'GET',
                         dataType: 'json',
@@ -217,15 +224,19 @@ function loadCalendar() {
                           console.log(result)
                         }
                       })
+                        $('#fullCalModal').modal('hide');
 
-                    $('#fullCalModal').modal('hide');
+                        $('#eventName').val('')
+                        $('#eventStartDate').val('')
+                        $('#eventLocation').val('')
+                        $('#eventEndDate').val('')
+                        $('#detailAddress').val('')
+                        $('#color_select').val('')
+                    }
+                    else {
+                        alert('일정내용과 날짜는 필수 입력값입니다.')
+                    }
 
-                    $('#eventName').val('')
-                    $('#eventStartDate').val('')
-                    $('#eventLocation').val('')
-                    $('#eventEndDate').val('')
-                    $('#detailAddress').val('')
-                    $('#color_select').val('')
                     });
 
                 $('#eventDefault').unbind();
@@ -340,7 +351,7 @@ if (document.readyState !== 'complete') {
 
         let address = $('#fixDetailAddress').val()
 
-        geocoder.addressSearch(address, function(result, status) {
+        geocoder.addressSearch(address, function (result, status) {
             console.log(result)
             console.log(status)
             // 정상적으로 검색이 완료됐으면
@@ -371,16 +382,23 @@ if (document.readyState !== 'complete') {
                 var position = new kakao.maps.LatLng(result[0].y, result[0].x);
 
                 // 특정 위치의 좌표와 가까운 로드뷰의 panoId를 추출하여 로드뷰를 띄운다.
-                roadviewClient.getNearestPanoId(position, 50, function(panoId) {
+                roadviewClient.getNearestPanoId(position, 50, function (panoId) {
                     roadview.setPanoId(panoId, position); //panoId와 중심좌표를 통해 로드뷰 실행
                 });
             }
+            else {
+                $('#map_view').remove()
+                $('#kakao_map').remove()
+            }
         });
     });
-
     $('#fixModal').on('shown.bs.modal', function (e) {
-                   map.relayout()
-                });
+        map.relayout()
+    });
+    
+    $('#fixModal').on('hidden.bs.modal', function (e) {
+        location.href = "http://127.0.0.1:8000/calendars"
+    })
 }
 else {
     loadCalendar();
