@@ -12,4 +12,5 @@ urlpatterns = [
     path('map/', views.map, name='map'),
     path('resize/', views.resize, name='resize'),
     path('drop/', views.drop, name='drop'),
+    path('fix_map/', views.fix_map, name='fix_map'),
 ]

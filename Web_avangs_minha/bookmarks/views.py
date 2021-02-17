@@ -13,5 +13,6 @@ def list(request):
     u_id = request.session['loginObj']['u_name']
     posts = Book.objects.filter(username=u_id).order_by('category')
     return render(request, 'bookmarks/list.html',
-                  {'posts': posts})
+                  {'posts': posts,
+                  'page_title': request.session['loginObj']['u_name']})
 

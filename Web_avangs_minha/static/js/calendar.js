@@ -1,3 +1,4 @@
+
 function loadCalendar() {
     var calendarEl = document.getElementById('calendar');
     var calendar = new FullCalendar.Calendar(calendarEl, {
@@ -43,7 +44,7 @@ function loadCalendar() {
                     successCallback(load_events);
                 },
                 error: function (result, status, error) {
-                    alert("code:" + result.status + "\n" + "message:" + result.responseText + "\n" + "error:" + error)
+                    alert("error:" + error)
                 }
             });
         },
@@ -66,28 +67,38 @@ function loadCalendar() {
                 event.jsEvent.preventDefault();
             }
             else {
+                $('#fixEventId').val(event.event.id);
                 $('#fixEventName').val(event.event.title);
                 $('#fixStartDate').val(moment(event.event.start).format('YYYY-MM-DD'));
                 $('#fixEndDate').val(moment(event.event.end).subtract(1, 'days').format('YYYY-MM-DD'));
                 $('#fixEventLocation').val(event.event.extendedProps.location);
                 $('#fixDetailAddress').val(event.event.extendedProps.address);
                 $('#fix_color_select').val(event.event.backgroundColor)
+                let fixDetailAddress = $('#fixDetailAddress').val()
+
+                if (!fixDetailAddress){
+                    $('#fixDetailAddress').val('')
+                }
 
                 $('#fixModal').modal('show');
 
                 // 수정 버튼
                 $('#fixSubmitSave').unbind()
                 $('#fixSubmitSave').on('click', function () {
+                    let end_val = $('#fixEndDate').val()
+                    let end_date = formatDate(end_val)
+
 
                     let e_title = $('#fixEventName').val()
                     let e_start = $('#fixStartDate').val()
-                    let e_end = moment(event.event.end).format('YYYY-MM-DD')
+                    let e_end = end_date
                     let e_location = $('#fixEventLocation').val()
                     let e_address = $('#fixDetailAddress').val()
                     let e_color = $('#fix_color_select').val()
                     let e_id = event.event.id
 
-                    $.ajax({
+                    if (e_title && e_start && e_end ) {
+                        $.ajax({
                         url: '/calendars/fix/',
                         type: 'GET',
                         dataType: 'json',
@@ -103,8 +114,6 @@ function loadCalendar() {
                         },
                         success: function (result, successCallback, failureCallback) {
 
-                            console.log(result.title)
-
                             alert('정상적으로 수정되었습니다.')
                             event.event.setProp('title', result.title);
                             event.event.setProp('backgroundColor', result.color);
@@ -112,18 +121,19 @@ function loadCalendar() {
                             event.event.setExtendedProp('location', result.location);
                             event.event.setExtendedProp('address', result.address);
                             event.event.setExtendedProp('description', result.description);
-                            // event.event.setDates($('#fixStartDate').val(),$('#fixEndDate').val());
-                            // event.event.cache= false
+                            event.event.setDates(result.start, result.end, {allDay: true});
+
                         },
                         error: function(result,status,error) {
-                          alert("code:"+result.status+"\n"+"message:"+result.responseText+"\n"+"error:"+error)
-                          console.log(result)
+                          alert("error:"+error)
                         }
                       })
 
-
                     $('#fixModal').modal('hide');
-
+                    }
+                    else {
+                        alert('일정내용과 날짜는 필수 입력값입니다.')
+                    }
                 });
 
                 // 삭제
@@ -142,20 +152,19 @@ function loadCalendar() {
                                 e_id: e_id
                             },
                             success: function (result, successCallback, failureCallback) {
-
-                                alert('정상적으로 삭제 되었습니다.')
                                 event.event.remove()
+                                alert('정상적으로 삭제 되었습니다.')
                             },
 
                             error: function (result, status, error) {
-                                alert("code:" + result.status + "\n" + "message:" + result.responseText + "\n" + "error:" + error)
-                                console.log(result)
+                                alert("error:" + error)
                             }
                         })
 
                         $('#fixModal').modal('hide');
                         }
                     });
+
                 }
         },
 
@@ -164,23 +173,27 @@ function loadCalendar() {
 
             if (confirm('새로운 일정을 추가하시겠습니까?')) {
 
-
-                $('#eventStartDate').val(moment(info.start).format('YYYY-MM-DD'))
-                $('#eventEndDate').val(moment(info.end).subtract(1, 'days').format('YYYY-MM-DD'))
+                let start_date = moment(info.start).format('YYYY-MM-DD')
+                let end_date = moment(info.end).subtract(1, 'days').format('YYYY-MM-DD')
+                $('#eventStartDate').val(start_date)
+                $('#eventEndDate').val(end_date)
                 $('#fullCalModal').modal('show');
 
                 $('#submitSave').unbind()
                 $('#submitSave').on('click', function () {
-                    alert('일정을 저장하겠습니다.')
+                    alert('일정을 저장하시겠습니다.')
 
                     let e_title = $('#eventName').val()
                     let e_start = $('#eventStartDate').val()
-                    let e_end = moment(info.end).format('YYYY-MM-DD')
+                    let e_end_date = $('#eventEndDate').val()
+                    let e_end = formatDate(e_end_date)
+                    // let e_end = moment(info.end).format('YYYY-MM-DD')
                     let e_location = $('#eventLocation').val()
                     let e_address = $('#detailAddress').val()
                     let e_color = $('#color_select').val()
 
-                    $.ajax({
+                    if (e_title && e_start && e_end_date ) {
+                        $.ajax({
                         url: '/calendars/save/',
                         type: 'GET',
                         dataType: 'json',
@@ -211,15 +224,19 @@ function loadCalendar() {
                           console.log(result)
                         }
                       })
+                        $('#fullCalModal').modal('hide');
 
-                    $('#fullCalModal').modal('hide');
+                        $('#eventName').val('')
+                        $('#eventStartDate').val('')
+                        $('#eventLocation').val('')
+                        $('#eventEndDate').val('')
+                        $('#detailAddress').val('')
+                        $('#color_select').val('')
+                    }
+                    else {
+                        alert('일정내용과 날짜는 필수 입력값입니다.')
+                    }
 
-                    $('#eventName').val('')
-                    $('#eventStartDate').val('')
-                    $('#eventLocation').val('')
-                    $('#eventEndDate').val('')
-                    $('#detailAddress').val('')
-                    $('#color_select').val('')
                     });
 
                 $('#eventDefault').unbind();
@@ -299,9 +316,21 @@ function loadCalendar() {
         calendar.render();
 };
 
+// Date날짜 YYYY-MM-DD 형식으로 변환 함수
+function formatDate(date) {
+    var d = new Date(date),
+        month = '' + (d.getMonth() + 1),
+        day = '' + (d.getDate() + 1),
+        year = d.getFullYear();
+    if (month.length < 2)
+        month = '0' + month;
+    if (day.length < 2)
+        day = '0' + day;
+    return [year, month, day].join('-'); }
 
 
-// 여기서부터 캘린더, 지도 실행
+
+// 여기서부터 캘린더 & 지도 실행
 if (document.readyState !== 'complete') {
 
     document.addEventListener('DOMContentLoaded', loadCalendar);
@@ -322,7 +351,7 @@ if (document.readyState !== 'complete') {
 
         let address = $('#fixDetailAddress').val()
 
-        geocoder.addressSearch(address, function(result, status) {
+        geocoder.addressSearch(address, function (result, status) {
             console.log(result)
             console.log(status)
             // 정상적으로 검색이 완료됐으면
@@ -353,17 +382,23 @@ if (document.readyState !== 'complete') {
                 var position = new kakao.maps.LatLng(result[0].y, result[0].x);
 
                 // 특정 위치의 좌표와 가까운 로드뷰의 panoId를 추출하여 로드뷰를 띄운다.
-                roadviewClient.getNearestPanoId(position, 50, function(panoId) {
+                roadviewClient.getNearestPanoId(position, 50, function (panoId) {
                     roadview.setPanoId(panoId, position); //panoId와 중심좌표를 통해 로드뷰 실행
                 });
             }
+            else {
+                $('#map_view').remove()
+                $('#kakao_map').remove()
+            }
         });
     });
-
     $('#fixModal').on('shown.bs.modal', function (e) {
-                   console.log(e)
-                   map.relayout()
-                });
+        map.relayout()
+    });
+    
+    $('#fixModal').on('hidden.bs.modal', function (e) {
+        location.href = "http://127.0.0.1:8000/calendars"
+    })
 }
 else {
     loadCalendar();

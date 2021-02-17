@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
 
-    <title>BOOKMARK!!</title>
+    <title>{{page_title}}님 환영합니다.</title>
 
     <script
             src="https://code.jquery.com/jquery-2.2.4.min.js"
@@ -17,13 +17,10 @@
 
 
     <!-- CSS, JS 파일 불러오기 -->
-    <link href="/static/css/dashboard.css" rel="stylesheet">
-    <link href="/static/css/call_position.css" rel="stylesheet">
-    <link href="/static/css/place.css" rel="stylesheet">
-    <link href="/static/css/custommoveray.css" rel="stylesheet">
     <link href="/static/css/modal.css" rel="stylesheet">
+    <link href="/static/css/dashboard.css" rel="stylesheet">
 
-    <script src="/static/js/kakaomap.js"></script>
+
     <script src="/static/js/posts.js"></script>
 
 </head>
@@ -31,7 +28,7 @@
 <body>
 
 <header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
-    <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="#">BOOKMARK!!</a>
+    <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="#">BOOKMARK</a>
 </header>
 
 
@@ -43,21 +40,21 @@
                 <ul class="nav flex-column">
                     <br><br><br>
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="/">
+                        <a class="nav-link " aria-current="page" href="/">
                             <span data-feather="home"></span>
                             LOGIN
                         </a>
                     </li>
                     <br><br><br><br><br>
                     <li class="nav-item">
-                        <a class="nav-link active" href="/maps">
+                        <a class="nav-link " href="/maps">
                             <span data-feather="file"></span>
                             KAKAO MAP
                         </a>
                     </li>
                     <br><br><br><br><br>
                     <li class="nav-item">
-                        <a class="nav-link active" href="/calendars">
+                        <a class="nav-link " href="/calendars">
                             <span data-feather="shopping-cart"></span>
                             CALENDER
                         </a>
@@ -77,7 +74,7 @@
 
 <!--  여기부터 캘린더, 맵 코딩 하면 됩니다!! -->
 <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
-    <div class="container">
+
         <h1>Bookmarks</h1>
 
         <div class="m-1"></div>
@@ -109,7 +106,7 @@
         </table>
         </div>
 
-    </div>
+
 </main>
     </div>
 </div>

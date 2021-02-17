@@ -5,13 +5,13 @@ from django.contrib import auth
 
 def login(request):
     return render(request, 'users/login.html', {
-        'page_title': 'User Login',
+        'page_title': 'Login page',
     })
 
 
 def signup(request):
     return render(request, 'users/signup.html', {
-        'page_title': '회원가입'
+        'page_title': 'Signup page'
     })
 
 
@@ -24,18 +24,20 @@ def signup_process(request):
     if user_list.filter(username=user_id).exists():
 
         return render(request, 'users/signup.html', {
-            'err_msg': '이미 존재하는 ID입니다!!'
+            'err_msg': '이미 존재하는 ID입니다',
+            'page_title': 'Signup page'
         })
 
     elif user_password1 == user_password2:
 
         User.objects.create_user(username=user_id, password=user_password1)
-        return redirect('home')
+        return render(request, 'users/login.html')
 
     else:
 
         return render(request, 'users/signup.html', {
-            'err_msg': '비밀번호가 달라요!!'
+            'err_msg': '비밀번호가 다릅니다',
+            'page_title': 'Signup page'
         })
 
 
@@ -54,7 +56,8 @@ def login_process(request):
 
     else:
         return render(request, 'users/login.html', {
-            'err_msg': '로그인 실패입니다.'
+            'err_msg': '로그인 실패입니다.',
+            'page_title': 'Login page'
         })
 
 

@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
 
-    <title>{{ page_title }}</title>
+    <title>{{page_title}}님 환영합니다.</title>
 
     <script
             src="https://code.jquery.com/jquery-2.2.4.min.js"
@@ -17,11 +17,13 @@
 
 
     <!-- CSS, JS 파일 불러오기 -->
+
+    <link href="/static/css/modal.css" rel="stylesheet">
     <link href="/static/css/dashboard.css" rel="stylesheet">
+
     <link href="/static/css/call_position.css" rel="stylesheet">
     <link href="/static/css/place.css" rel="stylesheet">
     <link href="/static/css/custommoveray.css" rel="stylesheet">
-    <link href="/static/css/modal.css" rel="stylesheet">
 
     <script src="/static/js/kakaomap.js"></script>
 
@@ -37,7 +39,7 @@
     <div class="modal hidden">
     <div class="md_overlay"></div>
     <div class="md_content">
-        <h1>북마크!!</h1>
+        <h1>북마크 등록</h1>
         <br>
         <div class="modal_text">
             <input type="" id="category" name="category" class="content1" placeholder="카테고리" >
@@ -64,7 +66,7 @@
                 <ul class="nav flex-column">
                     <br><br><br>
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="/">
+                        <a class="nav-link " aria-current="page" href="/">
                             <span data-feather="home"></span>
                             LOGIN
                         </a>
@@ -78,14 +80,14 @@
                     </li>
                     <br><br><br><br><br>
                     <li class="nav-item">
-                        <a class="nav-link active" href="/calendars">
+                        <a class="nav-link " href="/calendars">
                             <span data-feather="shopping-cart"></span>
                             CALENDER
                         </a>
                     </li>
                     <br><br><br><br><br>
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="/bookmarks">
+                        <a class="nav-link " aria-current="page" href="/bookmarks">
                             <span data-feather="home"></span>
                             BOOKMARK
                         </a>
@@ -128,8 +130,8 @@
     </div>
 
     {#  성수님꺼  #}
-{#    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=ebb7d6186d87988d51dbbe5d3c725861&libraries=services"></script>#}
-    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=2d9522bd15c02cead68a2ae145ec6028&libraries=services"></script>
+    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=ebb7d6186d87988d51dbbe5d3c725861&libraries=services"></script>
+{#    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=2d9522bd15c02cead68a2ae145ec6028&libraries=services"></script>#}
 
 
     <script>
@@ -226,6 +228,11 @@
                     kakao.maps.event.addListener(marker, 'click', function() {
                         custom(marker, title,address1, address2,call,y,x)
                     });
+
+{#                    {% if location %}#}
+{#                        alert('잘 될까요?')#}
+{#                        $('#content').attr('value',{{ location }})#}
+{#                    {% endif %}#}
 
                     itemEl.onmouseover =  function () {
                         displayInfowindow(marker, title);
@@ -341,37 +348,39 @@
 
         // 커스텀 오버레이 생성함수
         function custom(marker, title,address1, address2, call, y,x) {
-            let content =
-                '<div class="wrap">' +
-                '    <div class="info">' +
-                '        <div class="title" id="title" >' +
-                title         +
-                '            <div class="close" onclick="closeOverlay()" title="닫기"></div>' +
-                '        </div>' +
-                '        <div class="body">' +
-                '            <div class="desc">' +
-                '                <div class="ellipsis" id="address1">' + address1  + '</div>' +
-                '                <div class="jibun" id="address2" >' + address2 +'</div>' +
-                '                <div class="call" id="call">'+ '&nbsp' + call +'</div>' +
-                '<br>' +
-                '<input type="text" id="date1" name="date1" class="date" placeholder="시작날짜 yyyy.mm.dd" >' +
-                '&nbsp' +'&nbsp' +'&nbsp' +'&nbsp' +'&nbsp' +
-                '<input type="text" id="date2" name="date2" class="date" placeholder="끝나는 yyyy.mm.dd" >' +
-                '<br>' +
-                '<input type="text" id="content" name="content" class="content" placeholder="일정내용" >' +
-                '            </div>' +
-                '            <div class="img">' +
-                '                <div id="staticMap" style="width:200px;height:90px;"></div>' +
-                // '                <img src="img/aa.jpg" width="200px" height="90px">' +
-                // '                <div id="roadview" width="200px" height="90px"></div>' +
-                '           </div>' +
-                '       <input class="button1" type="button" value="일정추가" onclick="call_cal()" >' +
-                '       <input class="button2" type="button" value="카테고리" onclick="modal123()">' +
-                '            </div>' +
-                '        </div>' +
-                '    </div>' +
-                '</div>';
 
+
+                let content =
+                    '<div class="wrap">' +
+                    '    <div class="info">' +
+                    '        <div class="title" id="title" >' +
+                    title         +
+                    '            <div class="close" onclick="closeOverlay()" title="닫기"></div>' +
+                    '        </div>' +
+                    '        <div class="body">' +
+                    '            <div class="desc">' +
+                    '                <div class="ellipsis" id="address1">' + address1  + '</div>' +
+                    '                <div class="jibun" id="address2" >' + address2 +'</div>' +
+                    '                <div class="call" id="call">'+ '&nbsp' + call +'</div>' +
+                    '<br>' +
+                    '<input type="text" id="eventId" value="{{ id }}" style="display:none;">' +
+                    '<input type="date" id="date1" name="date1" class="date" placeholder="시작날짜 yyyy-mm-dd" pattern="\d{4}-\d{2}-\d{2}" value="{{start}}" >' +
+                    '&nbsp' +'&nbsp' +'&nbsp' +'&nbsp' +'&nbsp' +
+                    '<input type="date" id="date2" name="date2" class="date" placeholder="끝날짜 yyyy-mm-dd" pattern="\d{4}-\d{2}-\d{2}" value="{{end}}">' +
+                    '<br>' +
+                    '<input type="text" id="content" name="content" class="content" placeholder="일정내용" value="{{schedule}}" >' +
+                    '            </div>' +
+                    '            <div class="img">' +
+                    '                <div id="staticMap" style="width:200px;height:90px;"></div>' +
+                    // '                <img src="img/aa.jpg" width="200px" height="90px">' +
+                    // '                <div id="roadview" width="200px" height="90px"></div>' +
+                    '           </div>' +
+                    '       <input class="button1" type="button" value="일정추가" onclick="call_cal()" >' +
+                    '       <input class="button2" type="button" value="카테고리" onclick="modal123()">' +
+                    '            </div>' +
+                    '        </div>' +
+                    '    </div>' +
+                    '</div>';
 
              overlay = new kakao.maps.CustomOverlay({
                 content: content,
@@ -383,7 +392,7 @@
 
            markerPosition  = new kakao.maps.LatLng(y, x);
             markerPosition_y  = y
-            markerPosition_y  = x
+            markerPosition_x  = x
 
             markers = {
                 position: markerPosition
