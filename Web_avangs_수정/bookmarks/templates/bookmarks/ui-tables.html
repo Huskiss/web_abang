@@ -24,6 +24,12 @@
 
     cursor: pointer;
     }
+
+    input.category_text {
+    background-color: transparent;
+    border: none;
+    }
+
     </style>
 
 </head>
@@ -63,7 +69,7 @@
                                             <tr>
                                                 <form action="/bookmarks/map/" method="post">
                                                     {% csrf_token %}
-                                                <td>{{ post.category }}</td>
+                                                <td><input type="text" value="{{ post.category }}" class="category_text" name="category"></td>
                                                 <td><input type=submit value="{{ post.title }}" class="submitLink" name="bookmark_location"></td>
                                                 <td>{{ post.address1 }}</td>
                                                 <td>{{ post.call }}</td>

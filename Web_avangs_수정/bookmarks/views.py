@@ -21,7 +21,9 @@ def bookmarks(request):
 
 def map(request):
     location = request.POST['bookmark_location']
+    category = request.POST['category']
     context = {
         'location': location,
+        'category': category
     }
     return render(request, 'maps/ui-maps_re.html', context)
