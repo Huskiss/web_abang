@@ -6,7 +6,10 @@ from calendars.models import Calendar
 import json
 
 def calendar(request):
-    return render(request, 'calendars/calendar.html', {'page_title': request.session['loginObj']['u_name']})
+    return render(request, 'calendars/ui-calendars.html', {'page_title': request.session['loginObj']['u_name']})
+
+# def calendar(request):
+#     return render(request, 'calendars/calendar.html', {'page_title': request.session['loginObj']['u_name']})
 
 def save(request):
 
@@ -117,7 +120,7 @@ def map(request):
         'start': start,
         'end': end
     }
-    return  render(request, 'maps/kakaomap.html', context)
+    return  render(request, 'maps/ui-maps.html', context)
 
 # 캘린더 바 사이즈 조절 시, 데이터베이스 날짜 수정
 def resize(request):
@@ -167,4 +170,4 @@ def fix_map(request):
         'end': end,
         'id': eventId
     }
-    return  render(request, 'maps/kakaomap.html', context)
+    return  render(request, 'maps/ui-maps.html', context)
