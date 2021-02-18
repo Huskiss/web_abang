@@ -395,7 +395,7 @@ if (document.readyState !== 'complete') {
     $('#fixModal').on('shown.bs.modal', function (e) {
         map.relayout()
     });
-    
+
     $('#fixModal').on('hidden.bs.modal', function (e) {
         location.href = "http://127.0.0.1:8000/calendars"
     })

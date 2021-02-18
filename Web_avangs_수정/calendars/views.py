@@ -114,6 +114,9 @@ def map(request):
     schedule = request.POST['eventName']
     start = request.POST['eventStartDate']
     end = request.POST['eventEndDate']
+
+    print(location)
+
     context = {
         'location': location,
         'schedule': schedule,

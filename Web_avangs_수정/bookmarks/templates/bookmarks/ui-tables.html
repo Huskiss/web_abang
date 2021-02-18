@@ -15,6 +15,17 @@
 
 <script src="/static/js/posts.js"></script>
 
+    <style>
+
+    input.submitLink {
+    background-color: transparent;
+    color: rebeccapurple;
+    border: none;
+
+    cursor: pointer;
+    }
+    </style>
+
 </head>
 
 
@@ -50,10 +61,13 @@
                                         <tbody>
                                         {% for post in posts %}
                                             <tr>
+                                                <form action="/bookmarks/map/" method="post">
+                                                    {% csrf_token %}
                                                 <td>{{ post.category }}</td>
-                                                <td>{{ post.title }}</td>
+                                                <td><input type=submit value="{{ post.title }}" class="submitLink" name="bookmark_location"></td>
                                                 <td>{{ post.address1 }}</td>
                                                 <td>{{ post.call }}</td>
+                                                </form>
                                             </tr>
                                         {% endfor %}
                                         </tbody>

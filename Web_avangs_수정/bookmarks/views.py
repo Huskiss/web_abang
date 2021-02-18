@@ -18,3 +18,10 @@ def bookmarks(request):
 #                   {'posts': posts,
 #                   'page_title': request.session['loginObj']['u_name']})
 #
+
+def map(request):
+    location = request.POST['bookmark_location']
+    context = {
+        'location': location,
+    }
+    return render(request, 'maps/ui-maps_re.html', context)

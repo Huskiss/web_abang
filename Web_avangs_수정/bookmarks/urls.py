@@ -5,4 +5,5 @@ app_name = 'bookmarks'
 
 urlpatterns = [
     path('', views.bookmarks, name='bookmarks'),
+    path('map/', views.map, name='map')
 ]
