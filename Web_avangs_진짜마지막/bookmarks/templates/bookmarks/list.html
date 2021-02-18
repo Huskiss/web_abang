@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+
+    <title>{{page_title}}님 환영합니다.</title>
+
+    <script
+            src="https://code.jquery.com/jquery-2.2.4.min.js"
+            integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+            crossorigin="anonymous"></script>
+
+    <!-- Bootstrap도 CDN방식으로 이용할 꺼에요!   -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
+
+
+
+    <!-- CSS, JS 파일 불러오기 -->
+    <link href="/static/css/modal.css" rel="stylesheet">
+    <link href="/static/css/dashboard.css" rel="stylesheet">
+
+
+
+</head>
+
+<body>
+
+<header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
+    <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="#">BOOKMARK</a>
+</header>
+
+
+<div class="container-fluid">
+    <div class="row">
+<!-- DASH BOARD -->
+        <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+            <span class="position-sticky pt-3">
+                <ul class="nav flex-column">
+                    <br><br><br>
+                    <li class="nav-item">
+                        <a class="nav-link " aria-current="page" href="/">
+                            <span data-feather="home"></span>
+                            LOGIN
+                        </a>
+                    </li>
+                    <br><br><br><br><br>
+                    <li class="nav-item">
+                        <a class="nav-link " href="/maps">
+                            <span data-feather="file"></span>
+                            KAKAO MAP
+                        </a>
+                    </li>
+                    <br><br><br><br><br>
+                    <li class="nav-item">
+                        <a class="nav-link " href="/calendars">
+                            <span data-feather="shopping-cart"></span>
+                            CALENDER
+                        </a>
+                    </li>
+                    <br><br><br><br><br>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="/bookmarks">
+                            <span data-feather="home"></span>
+                            BOOKMARK
+                        </a>
+                    </li>
+                    <br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+
+                </ul>
+            </span>
+        </nav>
+
+<!--  여기부터 캘린더, 맵 코딩 하면 됩니다!! -->
+<main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+
+        <h1>Bookmarks</h1>
+
+        <div class="m-1"></div>
+
+        <div class="table-responsive">
+        <table class="table table-striped table-sm">
+          <thead>
+            <tr>
+              <th>username</th>
+              <th>category</th>
+              <th>title</th>
+              <th>address</th>
+              <th>call</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for post in posts %}
+            <tr>
+              <td>{{ post.username }}</td>
+              <td>{{ post.category }}</td>
+              <td>{{ post.title }}</td>
+              <td>{{ post.address1 }}</td>
+              <td>{{ post.call }}</td>
+
+
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+        </div>
+
+
+</main>
+    </div>
+</div>
+</body>
+</html>
