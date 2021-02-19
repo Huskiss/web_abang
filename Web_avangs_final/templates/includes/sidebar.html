@@ -1,0 +1,53 @@
+    <div class="sidebar" data-color="purple" data-background-color="white" data-image="/static/assets/img/sidebar-1.jpg">
+      <div class="logo">
+        <a target="_blank" rel="noopener noreferrer" class="simple-text logo-normal">
+         category
+        </a>
+      </div>
+      <div class="sidebar-wrapper">
+        <ul class="nav">
+        {% if request.user.is_authenticated %}
+
+{#          <li class="nav-item {% if 'index' in segment %} active {% endif %}">#}
+{#            <a class="nav-link" href="/main/">#}
+{#              <i class="material-icons">dashboard</i>#}
+{#              <p>Board</p>#}
+{#            </a>#}
+{#          </li>#}
+
+          <li class="nav-item {% if 'ui-maps' in segment %} active {% endif %}">
+            <a class="nav-link" href="/maps/">
+              <i class="material-icons">fmd_good</i>
+              <p>Kakao Map</p>
+            </a>
+          </li>
+
+          <li class="nav-item {% if 'ui-calendars' in segment %} active {% endif %}">
+            <a class="nav-link" href="/calendars/">
+              <i class="material-icons">calendar_today</i>
+              <p>Calender</p>
+            </a>
+          </li>
+          <li class="nav-item {% if 'ui-tables' in segment %} active {% endif %}">
+            <a class="nav-link" href="/bookmarks/">
+              <i class="material-icons">library_books</i>
+              <p>Bookmark</p>
+            </a>
+          </li>
+
+          <li class="nav-item ">
+            <a class="nav-link" href="/users/logout" >
+              <i class="material-icons">directions_run</i>
+              <p>Logout</p>
+            </a>
+          </li>
+
+
+        {% else %}
+
+
+        {% endif %}
+        </ul>
+      </div>
+
+    </div>

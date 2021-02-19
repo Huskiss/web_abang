@@ -1,0 +1,112 @@
+<!--
+=========================================================
+ Material Dashboard - v2.1.2
+=========================================================
+
+ Product Page: https://www.creative-tim.com/product/material-dashboard
+ Copyright 2019 Creative Tim (https://www.creative-tim.com)
+ Licensed under MIT (https://github.com/creativetimofficial/material-dashboard/blob/master/LICENSE.md)
+
+ Coded by Creative Tim
+
+=========================================================
+
+ The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software. -->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8" />
+
+  <title>
+    Avangs - Signup
+  </title>
+
+  <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
+  <!--     Fonts and icons     -->
+  <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
+  <!-- CSS Files -->
+  <link href="/static/assets/css/material-dashboard.css?v=2.1.2" rel="stylesheet" />
+  <!-- CSS Just for demo purpose, don't include it in your project -->
+  <link href="/static/assets/demo/demo.css" rel="stylesheet" />
+
+</head>
+
+
+<body>
+<div class="content"><br><br><br><br><br><br><br><br>
+  <div class="row align-items-center justify-content-center ">
+    <div class="col-lg-4 align-self-md-end">
+      <div class="card">
+        <div class="card-header card-header-primary">
+          <h4 class="card-title">
+            Create Account
+          </h4>
+        </div>
+        <div class="card-body">
+            {% if err_msg %}
+                <h6 class="card-category">{{ err_msg }}</h6>
+            {% else %}
+                <h6 class="card-category">Add your credentials</h6>
+            {% endif %}
+
+          <br />
+
+          <form action="/users/signupProcess/" method="post">
+              {% csrf_token %}
+
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label for="inputId" class="bmd-label-floating">UserID</label>
+                  <input type="text" id="inputId" name="inputId" class="form-control" placeholder="아이디를 입력하세요" required autofocus>
+                </div>
+              </div>
+            </div>
+
+            <br />
+
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label for="inputPassword1" class="bmd-label-floating">Password</label>
+                  <input type="password" id="inputPassword1" name="inputPassword1" class="form-control" placeholder="비밀번호를 입력하세요" required autofocus>
+                </div>
+              </div>
+            </div>
+
+            <br />
+
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label for="inputPassword2" class="bmd-label-floating">Password Confirmation</label>
+                  <input type="password" id="inputPassword2" name="inputPassword2" class="form-control" placeholder="비밀번호를 한번 더 입력하세요" required autofocus>
+                </div>
+              </div>
+            </div>
+
+            <br />
+
+            <button name="register" class="btn btn-primary pull-left">Register</button>
+
+            <span class="pull-right">
+              Have an account?  <a class="text-primary" href="/users/login/">Login</a>
+            </span>
+
+            <div class="clearfix"></div>
+
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+
+
+<!-- Specific Page JS goes HERE  -->
+<script src="/static/js/users.js"></script>
+

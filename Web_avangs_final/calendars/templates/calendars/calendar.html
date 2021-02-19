@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="en" class="h-100">
+  <head>
+    <meta charset="utf-8">
+    <title>{{page_title}}님 환영합니다.</title>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.0/moment.min.js"></script>
+{#    <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.2/moment.min.js"></script>#}
+
+    <link href='https://unpkg.com/@fullcalendar/core@4.3.1/main.min.css' rel='stylesheet' />
+    <link href='https://unpkg.com/@fullcalendar/daygrid@4.3.0/main.min.css' rel='stylesheet' />
+    <link href='https://unpkg.com/@fullcalendar/timegrid@4.3.0/main.min.css' rel='stylesheet' />
+    <link href='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css' rel='stylesheet' />
+
+    <script src='https://unpkg.com/@fullcalendar/core@4.3.1/main.min.js'></script>
+    <script src='https://unpkg.com/@fullcalendar/interaction@4.3.0/main.min.js'></script>
+    <script src='https://unpkg.com/@fullcalendar/daygrid@4.3.0/main.min.js'></script>
+    <script src='https://unpkg.com/@fullcalendar/timegrid@4.3.0/main.min.js'></script>
+    <script src='https://unpkg.com/@fullcalendar/google-calendar@4.3.0/main.js'></script>
+
+    {# 달력 아이콘 위한 aewsome font CDN #}
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.css" />
+    <link href="/static/css/dashboard.css" rel="stylesheet">
+
+  </head>
+
+<body>
+
+<header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
+    <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="#">CALENDAR</a>
+
+</header>
+
+<div class="container-fluid">
+    <div class="row">
+
+<!-- DASH BOARD -->
+        <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+            <span class="position-sticky pt-3">
+                <ul class="nav flex-column">
+                    <br><br><br>
+                    <li class="nav-item">
+                        <a class="nav-link " aria-current="page" href="/">
+                            <span data-feather="home"></span>
+                            LOGIN
+                        </a>
+                    </li>
+                    <br><br><br><br><br>
+                    <li class="nav-item">
+                        <a class="nav-link " href="/maps">
+                            <span data-feather="file"></span>
+                            KAKAO MAP
+                        </a>
+                    </li>
+                    <br><br><br><br><br>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/calendars/">
+                            <span data-feather="shopping-cart"></span>
+                            CALENDER
+                        </a>
+                    </li>
+                    <br><br><br><br><br>
+                    <li class="nav-item">
+                        <a class="nav-link " aria-current="page" href="/bookmarks">
+                            <span data-feather="home"></span>
+                            BOOKMARK
+                        </a>
+                    </li>
+                    <br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+                </ul>
+            </span>
+        </nav>
+
+<div id='calendar' style="max-width: 60%; margin: 10px auto"></div>
+
+    </div>
+</div>
+<!--New 일정 추가 modal-->
+
+<div id="fullCalModal" class="modal fade">
+    <div class="modal-dialog" style="max-width: 50%; width: auto;">
+        <div class="modal-content">
+
+            <div class="modal-header" >
+                <h4 id="modalTitle" class="modal-title" >일정 추가</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">close</span> </button>
+            </div>
+
+
+            <div id="modalBody" class="modal-body">
+
+                <form action="/calendars/map/" method="post">
+                    {% csrf_token %}
+
+                <div class="form-group">
+                    <label for="eventName">일정 내용</label>
+                    <input class="form-control" type="text" id="eventName" name="eventName" required="required">
+                </div>
+
+                <div class="form-group form-inline">
+                    <label for="eventStartDate">시작:</label>&nbsp;&nbsp;
+                    <input type="date" class="form-control" style="width: 5cm" id="eventStartDate" name="eventStartDate" >&nbsp;&nbsp;&nbsp;
+
+                    <label for="eventEndDate">끝:</label>&nbsp;&nbsp;
+                    <input type="date" class="form-control" style="width: 5cm" id="eventEndDate" name="eventEndDate" >
+
+                </div>
+
+
+                <div class="form-group form-inline">
+                    <div class="input-group">
+                        <label for="eventLocation">장소명: </label>&nbsp;&nbsp;
+                        <input type="text" class="form-control" style="width: 8cm" id="eventLocation" name="eventLocation" required="required">&nbsp;&nbsp;&nbsp;
+                        <button type="submit" class="btn btn-primary" id="submitSearch">검색</button>
+                    </div>
+                </div>
+                </form>
+
+                <div class="form-group">
+                    <label for="detailAddress">도로명 주소</label>
+                    <input class="form-control" type="text" id="detailAddress" name="detailAddress">
+                </div>
+
+                <div class="modal-footer" >
+                    <label for="color_select">색상 :</label>
+                    <select class="inputModal mr-auto" name="color" id="color_select">
+                        <option value="red" style="color:#D25565;">빨간색</option>
+                        <option value="purple" style="color:#9775fa;">보라색</option>
+                        <option value="orange" style="color:#ffa94d;">주황색</option>
+                        <option value="royalblue" style="color:#74c0fc;">파란색</option>
+                        <option value="pink" style="color:#f06595;">핑크색</option>
+                        <option value="lightgreen" style="color:#63e6be;">연두색</option>
+                        <option value="green" style="color:#a9e34b;">초록색</option>
+                        <option value="blue" style="color:#4d638c;">남색</option>
+                        <option value="black" style="color:#495057;">검정색</option>
+                    </select>
+                    <button class="btn btn-default" data-dismiss="modal" aria-hidden="true" id="eventDefault">취소</button>
+                    <button type="button" class="btn btn-primary" id="submitSave" >저장</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!--기존 일정 클릭할 경우 modal-->
+
+<div id="fixModal" class="modal fade">
+    <div class="modal-dialog" >
+        <div class="modal-content" >
+
+            <div class="modal-header" >
+                <h4 id="fixModalTitle" class="modal-title" >일정 확인 및 수정</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">close</span> </button>
+            </div>
+
+            <div id="fixModalBody" class="modal-body">
+
+                <form action="/calendars/fix_map/" method="post">
+                    {% csrf_token %}
+
+                <input type="text" style="display: none" id="fixEventId" name="fixEventId">
+
+                <div class="form-group">
+                    <label for="fixEventName">[일정 내용]</label>
+                    <input class="form-control"
+                           type="text"
+                           id="fixEventName"
+                           name="fixEventName"
+                    >
+                </div>
+
+                <div class="form-group form-inline">
+                    <div class="input-group date" data-provide="datepicker">
+                        <label for="fixStartDate">시작:</label>&nbsp;&nbsp;
+                        <input type="date" class="form-control" style="width: 5cm" placeholder="날짜 형식 yyyy-mm-dd" id="fixStartDate" name="fixStartDate">&nbsp;&nbsp;&nbsp;
+                        <label for="fixEndDate">끝:</label>&nbsp;&nbsp;
+                        <input type="date" class="form-control" style="width: 5cm" placeholder="날짜 형식 yyyy-mm-dd" id="fixEndDate" name="fixEndDate">
+                    </div>
+                </div>
+
+                <div class="form-group form-inline">
+                    <div class="input-group">
+                        <label for="fixEventLocation">장소명: </label>&nbsp;&nbsp;
+                        <input type="text" class="form-control" style="width: 8cm" id="fixEventLocation" name="fixEventLocation">&nbsp;&nbsp;&nbsp;
+                        <button type="submit" class="btn btn-primary" id="fixSubmitSearch">검색</button>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="fixDetailAddress">[도로명 주소]</label>
+                    <input class="form-control" type="text" id="fixDetailAddress">
+                </div>
+                </form>
+
+                <div class="form-group form-inline" id="map_view">
+                    <div class="input-group">
+                        <div type="text" style="width:225px">[일반지도]</div>&nbsp;&nbsp;&nbsp;
+                        <div type="text" style="width:225px">[로드뷰]</div>
+                    </div>
+                </div>
+
+                <div class="form-group form-inline" id="kakao_map">
+                    <div class="input-group">
+                        <div id="map" style="width:225px;height:225px;"></div>&nbsp;&nbsp;&nbsp;
+                        <div id="roadview" style="width:225px;height:225px;"></div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <label for="color_select">색상 :</label>
+                    <select class="inputModal mr-auto" name="color" id="fix_color_select">
+                        <option value="red" style="color:#D25565;">red</option>
+                        <option value="purple" style="color:#9775fa;">purple</option>
+                        <option value="orange" style="color:#ffa94d;">orange</option>
+                        <option value="royalblue" style="color:#74c0fc;">royalblue</option>
+                        <option value="pink" style="color:#f06595;">pink</option>
+                        <option value="lightgreen" style="color:#63e6be;">lightgreen</option>
+                        <option value="green" style="color:#a9e34b;">green</option>
+                        <option value="blue" style="color:#4d638c;">blue</option>
+                        <option value="black" style="color:#495057;">black</option>
+                    </select>
+                    <button class="btn btn-default" data-dismiss="modal" aria-hidden="true" id="fixDefault">확인</button>
+                    <button type="button" class="btn btn-primary" id="fixSubmitSave">수정</button>
+                    <button type="button" class="btn btn-primary" id="fixSubmitDelete">삭제</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+</body>
+
+
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=2d9522bd15c02cead68a2ae145ec6028&libraries=services"></script>
+<script src="/static/js/calendar.js"></script>
+
+
+</html>

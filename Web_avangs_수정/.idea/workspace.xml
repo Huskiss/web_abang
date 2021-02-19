@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="a9f593e1-7ce1-43ed-991f-9ffc5503340e" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/bookmarks/templates/bookmarks/ui-tables.html" beforeDir="false" afterPath="$PROJECT_DIR$/bookmarks/templates/bookmarks/ui-tables.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bookmarks/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/bookmarks/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/templates/maps/ui-maps_re.html" beforeDir="false" afterPath="$PROJECT_DIR$/maps/templates/maps/ui-maps_re.html" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="ProjectId" id="1odf61albKGzKCzAIYQOJvybexO" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/static/css" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\USER\Desktop\web_abang\Web_avangs_수정\static\css" />
+      <recent name="C:\Users\USER\Desktop\web_abang\Web_avangs_수정\maps\templates\maps" />
+      <recent name="C:\Users\USER\Desktop\web_abang\Web_avangs_수정\calendars\templates\calendars" />
+    </key>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="a9f593e1-7ce1-43ed-991f-9ffc5503340e" name="Default Changelist" comment="" />
+      <created>1613621208452</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1613621208452</updated>
+      <workItem from="1613621209548" duration="649000" />
+      <workItem from="1613622833543" duration="4563000" />
+      <workItem from="1613628262134" duration="6062000" />
+      <workItem from="1613635520638" duration="1295000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>
